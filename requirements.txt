@@ -1,7 +1,7 @@
 requests
 time
 urllib3
-pandas as pd
+pandas
 json
 datetime
 asyncio
