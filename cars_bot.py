@@ -1053,7 +1053,7 @@ def run():
 			fl = False
 		except:
 			time.sleep(1)
-	i = 0
+	it = {}
 	get_admins()
 	print("Admins: ", admin_name)
 	get_managers()
@@ -1102,28 +1102,29 @@ def run():
 					cur_manager[message['message']['chat']['id']] = [-1, -1]
 					gl_clas[message['message']['chat']['id']] = '' 
 					chat_ids.append(message['message']['chat']['id'])
-					i = 0
+					it[message['message']['chat']['id']] = 0
 
-				if i == 0:
-					length = len(managers.columns)
-					for name in admin_name:
-						if (message['message']['chat']['username'] == name[0]):	
-							name[1] = message['message']['chat']['id']
-							reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
-							for i in range(length):
-								if managers[i][0] == name[0]:
-									managers[i][2] = message['message']['chat']['id']
-							break
-					else:
-					#if True:
-						for j in range(length):
-							if str(message['message']['chat']['username']) == str(managers[j][0]):
-								managers[j][2] = message['message']['chat']['id']
-								reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
+				if str(message).find('query') == -1:
+					if it[message['message']['chat']['id']] == 0:
+						length = len(managers.columns)
+						for name in admin_name:
+							if (message['message']['chat']['username'] == name[0]):	
+								name[1] = message['message']['chat']['id']
+								reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
+								for i in range(length):
+									if managers[i][0] == name[0]:
+										managers[i][2] = message['message']['chat']['id']
 								break
 						else:
-							reply_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
-					i = 1
+						#if True:
+							for j in range(length):
+								if str(message['message']['chat']['username']) == str(managers[j][0]):
+									managers[j][2] = message['message']['chat']['id']
+									reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
+									break
+							else:
+								reply_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
+						it[message['message']['chat']['id']] = 1
 
 				
 				try:
