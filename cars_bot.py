@@ -695,7 +695,7 @@ def delete_manager(name):
 	f = False
 	file = open('managers.txt', "w")
 	for i in range(length):
-		if (managers[i][0] == name):
+		if (managers[i][0] == name[1:]):
 			managers = managers.drop(columns = i)
 			f = True
 	
