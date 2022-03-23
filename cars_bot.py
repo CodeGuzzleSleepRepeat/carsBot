@@ -6,7 +6,7 @@ import pandas as pd
 import json
 import datetime
 import asyncio
-#from threading import Thread
+from threading import Thread
 #from telegram import Bot
 #from telegram.ext import Dispatcher, CommandHandler
 #from telegram.ext.dispatcher import run_async
@@ -58,7 +58,6 @@ def parse_data(date):
 	pool = json.loads(res.text)['data']['vehicles']
 	i = 0
 	for car in pool:
-		print(i)
 		if str(car).find('price') > -1:
 			price = str(car['price'])
 		else:
@@ -219,7 +218,7 @@ def get_updates(offset=0):
     return result['result']
 
 def editMessage(mes_id, chat_id, text):
-	print(requests.get(f'{URL}{TOKEN}/editMessage?chat_id={chat_id}&message_id={mes_id}&text={text}'))
+	requests.get(f'{URL}{TOKEN}/editMessage?chat_id={chat_id}&message_id={mes_id}&text={text}')
 
 
 
@@ -596,7 +595,7 @@ def editMessageCaption(mes_id, chat_id, text, cur, photo_num, salon):
 	reply_markup = {'inline_keyboard': [[{'text' : 'Связаться с менеджером', 'callback_data' : 'manager' + str(text) + '_' + str(salon)}]]}
 	sendMedia(chat_id, text, 18)
 
-	print(requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&reply_markup={json.dumps(reply_markup)}&text={caption}'))
+	requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&reply_markup={json.dumps(reply_markup)}&text={caption}')
 	
 
 
@@ -616,19 +615,19 @@ def reply_keyboard(chat_id, text):
 def reply_admin_keyboard(chat_id, text):
 	reply_markup = { "keyboard": [["Добавить админа"], ["Назначить менеджера"], ["Удалить менеджера"]], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
-	print(requests.post(f'{URL}{TOKEN}/sendMessage', data=data))
+	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
 def reply_manager_keyboard(chat_id, text):
 	reply_markup = { "keyboard": [["Удалить авто"]], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
-	print(requests.post(f'{URL}{TOKEN}/sendMessage', data=data))
+	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
 def send_photo_url(chat_id, img_url):
     requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}&photo={img_url}&caption=hi')
 
 def send_photo_file(chat_id, img, caption):
 	file = {'photo' : open(img, 'rb'), 'caption' : caption}
-	print(requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}', data=file))
+	requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}', data=file)
 
 def send_message(chat_id, text):
 	return json.loads(requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&text={text}').text)
@@ -680,7 +679,7 @@ def add_manager(str):
 	length = len(data)
 	length_managers = len(managers.columns)
 	managers[length_managers] = [name, salon, '-1']
-	print(managers)
+
 	file.write(name)
 	file.write(' ')
 	file.write(salon)
@@ -745,7 +744,7 @@ def shpw_one_clas(message, clas, num, count):
 	for i in range(length):
 		if int(data[i][17][6:]) < price1 and int(data[i][17][6:]) >= price2:
 			if j >= count:
-				print(inline_keyboard(message['message']['chat']['id'], data[i]).text)
+				inline_keyboard(message['message']['chat']['id'], data[i])
 				cc += 1
 			j += 1 
 			if (j == num + count):
@@ -805,13 +804,12 @@ def check_message(message):
 			#flag_car[chat_id_cur] = 0
 		return 1
 
-	print("HEY")
+	
 	if str(message).find('reply_to_message') > -1:
 		length = len(managers.columns)
 		for j in range(length):
 			if str(message['message']['chat']['id']) == str(managers[j][2]):
 				for i in range (len(chats)):
-					print('HERE', message['message']['reply_to_message']['message_id'], chats[i][0])
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 						#reply_keyboard(message['message']['chat']['id'], 'Хотите продолжить поиск?')
@@ -821,7 +819,7 @@ def check_message(message):
 	if str(message).find('file') > -1:
 		return 1
 
-	print("HEYw2")
+	
 	if message['message']['text'] == 'Выставить свою машину':
 		send_message(message['message']['chat']['id'], '1. Введите ваш город')
 		leng = len(managers)
@@ -842,11 +840,11 @@ def check_message(message):
 		if str(message['message']['chat']['username']) == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
 		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
-			print(send_message(name[1], "Введите ник менеджера и название салона (например, Мкад, 51-й километр) через пробел (для назначения менеджера по приему объявлений напишите просто Менеджер)"))
+			send_message(name[1], "Введите ник менеджера и название салона (например, Мкад, 51-й километр) через пробел (для назначения менеджера по приему объявлений напишите просто Менеджер)")
 			flag[chat_id_cur] = 1
 			return 1
 		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Добавить админа':
-			print(send_message(name[1], "Введите ник админа"))
+			send_message(name[1], "Введите ник админа")
 			flag_admin[chat_id_cur] = 1
 			return 1
 		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
@@ -858,7 +856,7 @@ def check_message(message):
 	length = len(managers.columns)
 	length_data = len(data)
 
-	print('HEY5')
+	
 	for i in range(length):
 		#if message['message']['chat']['username'] == managers[i][0] and managers[i][2] == -1:
 		#	managers[i][2] = message['message']['chat']['id']
@@ -866,7 +864,7 @@ def check_message(message):
 			send_message(managers[i][2], "Введите id авто")
 			flag_data[chat_id_cur] = 1
 			return 1
-	print("HEY6")
+	
 	for i in range(length):
 		if int(message['message']['chat']['id']) == int(managers[i][2]) and flag_data[chat_id_cur] == 1:
 			for j in range(length_data):
@@ -903,7 +901,7 @@ def check_message(message):
 		counter[chat_id_cur] = 0
 		return 1
 
-	print("HEY7")
+	
 	if message['message']['text'].find('Показать больше авто') > -1:
 		clas = message['message']['text'][21:]
 		counter[chat_id_cur] += num
@@ -923,7 +921,7 @@ def check_message(message):
 		"""
 	
 	if flag_car[chat_id_cur] == 1:
-		print("HERE")
+		
 		flag_car[chat_id_cur] = 2
 		length = len(managers.columns)
 		for i in range(length):
@@ -979,7 +977,7 @@ def check_message(message):
 def find_manager(message):
 	length = len(managers.columns)
 	for i in range(length):
-		print(message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower(), managers[i][1].lower())
+		message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower(), managers[i][1].lower()
 		if message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower() == managers[i][1].lower():
 			if int(managers[i][2]) > -1:
 				return i
@@ -1044,6 +1042,8 @@ def check_query(message):
 		return
 
 
+
+
 def run():
 	date = datetime.date.today()
 	fl = True
@@ -1074,7 +1074,9 @@ def run():
 		cur_date = datetime.date.today()
 		if cur_date > date:
 			try:
-				parse_data(date.year + '-' + date.month + '-' + date.day)
+				thread3 = Thread(target = parse_data, args = [date.year + '-' + date.month + '-' + date.day])
+				thread3.start()
+				#parse_data(date.year + '-' + date.month + '-' + date.day)
 				date = cur_date
 			except:
 				print("Unable to get today`s updates")
@@ -1127,20 +1129,25 @@ def run():
 						it[message['message']['chat']['id']] = 1
 
 				
-				try:
-					check_message(message)
-					check_query(message)
-				except:
-					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
-				"""
+				#try:
+				
+				#check_message(message)
+				
+				#check_query(message)
+				#except:
+				#send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
+				
 				mes1 = message
 				mes2 = message
-				thread1 = Thread(target=check_message, args=mes1)
-				thread2 = Thread(target=check_query, args=mes2)
-				thread1.start()
-				thread2.start()
-				thread1.join()
-				thread2.join()"""
+				try:
+					thread1 = Thread(target=check_message, args=[mes1])
+					thread2 = Thread(target=check_query, args=[mes2])
+					thread1.start()
+					thread2.start()
+				except:
+					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
+				#thread1.join()
+				#thread2.join()
 
 #loop = asyncio.new_event_loop()
 #loop.create_task(run())
