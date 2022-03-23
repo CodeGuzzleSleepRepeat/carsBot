@@ -174,7 +174,7 @@ def get_managers():
 			break
 		pos1 = line.find(' ')
 		pos2 = line.rfind(' ')
-		managers[i] = (line[pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
+		managers[i] = (line[:pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
 		i += 1
 
 
