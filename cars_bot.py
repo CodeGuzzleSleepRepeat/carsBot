@@ -174,7 +174,7 @@ def get_managers():
 			break
 		pos1 = line.find(' ')
 		pos2 = line.rfind(' ')
-		managers[i] = (line[1:pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
+		managers[i] = (line[pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
 		i += 1
 
 
@@ -675,6 +675,7 @@ def add_manager(str):
 	salon = str[pos + 1:]
 	if (name[0] != '@'):
 		return 'Неверный ник'
+	name = name[1:]
 
 	length = len(data)
 	length_managers = len(managers.columns)
