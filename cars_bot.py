@@ -1047,6 +1047,7 @@ def check_query(message):
 
 def run():
 	date = datetime.date.today()
+	tt = datetime.datetime.now()
 	fl = True
 	while fl:
 		try:
@@ -1074,7 +1075,7 @@ def run():
 		#time.sleep(0.02)
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
-		if int(cur_time.minute) >= int(tt.minute) + 15:
+		if int(cur_time.minute) >= int(tt.minute) + 15 or int(cur_time.hour) > int(tt.hour):
 			try:
 				thread3 = Thread(target = parse_data, args = [str(date.year) + '-' + str(date.month) + '-' + str(date.day)])
 				thread3.start()
