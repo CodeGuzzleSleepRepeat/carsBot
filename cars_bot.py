@@ -56,7 +56,7 @@ def parse_data(date):
 	fields = json.dumps({"filters" : [{"fields": "acquisitionDate","type": "greaterOrEqual","value": date}], "offset": "0","orders": ["-acquisitionDate"]})
 	res = requests.post(f'{url_poster}', headers=headers, data=fields)
 	pool = json.loads(res.text)['data']['vehicles']
-	i = 0
+	i = len(data)
 	for car in pool:
 		if str(car).find('price') > -1:
 			price = str(car['price'])
@@ -1072,13 +1072,15 @@ def run():
 			time.sleep(1)
 	while True:
 		#time.sleep(0.02)
+		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
-		if cur_date > date:
+		if int(cur_time.minute) >= int(tt.minute) + 15:
 			try:
-				thread3 = Thread(target = parse_data, args = [date.year + '-' + date.month + '-' + date.day])
+				thread3 = Thread(target = parse_data, args = [str(date.year) + '-' + str(date.month) + '-' + str(date.day)])
 				thread3.start()
 				#parse_data(date.year + '-' + date.month + '-' + date.day)
 				date = cur_date
+				tt = cur_time
 			except:
 				print("Unable to get today`s updates")
 		try:
