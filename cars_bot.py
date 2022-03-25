@@ -1163,8 +1163,9 @@ def run():
 				for ch_id in chat_ids:
 					if str(message).find('query') > -1:
 						break
-					if message['callback_query']['message']['chat']['id'] == ch_id:
-						break
+					if str(message).find('message') > -1:
+						if message['callback_query']['message']['chat']['id'] == ch_id:
+							break
 				else:	
 					flag[message['message']['chat']['id']] = 0
 					flag_data[message['message']['chat']['id']] = 0
