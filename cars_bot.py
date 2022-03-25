@@ -158,7 +158,7 @@ def parse_data(date):
 			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
-		print("Downloading photos: " + str(i) + " done")
+			#print("Downloading photos: " + str(i) + ' ' + str(j) + " done")
 		i += 1
 		data.append(ddd)
 	
@@ -189,24 +189,6 @@ def get_admins():
 		admin_name.append([line[:pos1], line[pos1 + 1:]])
 
 
-def get_data(data):
-	data.append(['id: 0', 'Цена: 990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'])
-	data.append(['id: 1', 'Цена: 1990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Волгоградский', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'])
-	data.append(['id: 2', 'Цена: 3990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 3', 'Цена: 10990000', 'Марка: Land Rover Range Rover', 'Город: СПБ', 'Салон: Лиговский', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 4', 'Цена: 990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 5', 'Цена: 550000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Котельники', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 6', 'Цена: 670000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 7', 'Цена: 4550000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Котельники', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 8', 'Цена: 220000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 9', 'Цена: 10030000', 'Марка: Land Rover Range Rover', 'Город: СПБ', 'Салон: Лиговский', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 10', 'Цена: 2990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Царицыно', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-	data.append(['id: 11', 'Цена: 1990000', 'Марка: Land Rover Range Rover', 'Город: Москва', 'Салон: Котельники', 'Год выпуска: 2007', 'Поколение: III рестайлинг (2005—2009)', 'Пробег: 330000 км', 'Владельцев по ПТС: 4+', 'Состояние: Не битый', 'Модификация: 3.6 TD AT (272 л.с.)', 'Объём двигателя: 3.6 л', 'Тип двигателя: Дизель', 'Коробка передач: Автомат', 'Привод: Полный', 'Комплектация: TDV8 Vogue', 'Тип кузова: Внедорожник', 'Цвет: Серебряный', 'Руль: Левый', 'VIN или номер кузова: SALL*************', 'avito1.webp', 'avito2.webp', 'avito3.webp', 'avito4.webp'] )
-
-	#data.append(['id: 1', '1500000', 'merc', 'volg', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp'])
-	#data.append(['id: 2', '4500000', 'audi', 'kashirka', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp'])
-	#data.append(['id: 3', '300000', 'opel', 'varshavka', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp'])
-	#data.append(['id: 4', '11000000', 'bentley', 'ligov', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp', 'car1.webp', 'car2.webp'])
 
 
 
@@ -681,12 +663,14 @@ def add_manager(str):
 	length_managers = len(managers.columns)
 	managers[length_managers] = [name, salon, '-1']
 
+	if length > 0:
+		file.write('\n')
 	file.write(name)
 	file.write(' ')
 	file.write(salon)
 	file.write(' ')
 	file.write('-1')
-	file.write('\n')
+	#file.write('\n')
 	return 'Менеджер успешно добавлен'
 
 def delete_manager(name):
@@ -695,7 +679,7 @@ def delete_manager(name):
 	f = False
 	file = open('managers.txt', "w")
 	for i in range(length):
-		if (managers[i][0] == name[1:]):
+		if (managers[i][0] == name):
 			managers = managers.drop(columns = i)
 			f = True
 	
@@ -769,10 +753,9 @@ def send_file(message):
 	else:
 		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
 		return -1
-	#caption = 'Новая машина от пользователя ' + message['message']['chat']['username'] + ': ' + message['message']['caption']
-	#num_of_photos[message['message']['chat']['id']] = words[len(words) - 1]
-	#chats.append([send_message(man, message['message']['caption'])['result']['message_id'], message['message']['chat']['id']])
-	send_message(man, 'Сообщение от ' + message['message']['chat']['username'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+
+	send_message(man, 'Сообщение от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+	#send_message(message['message']['chat']['id'], 'Фото доставлены')
 	mes = message['message']['photo'][3]['file_id']
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
 
@@ -791,18 +774,12 @@ def check_message(message):
 
 	chat_id_cur = message['message']['chat']['id']
 	
-	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 2:
+	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
-		chats.append([rrr['result']['message_id'], chat_id_cur])	
-		#send_message(chat_id_cur, 'Данные отправлены менеджеру')
-		send_message(message['message']['chat']['id'], '3. Введите данные:\n- Марка\n-Модель\n-Год\n-VIN\n-Цена\n-Описание')
-		#flag_car[chat_id_cur] += 1
-		#if (flag_car[chat_id_cur] == int(num_of_photos[chat_id_cur]) + 2):
-			#send_message(chat_id_cur, 'Данные отправлены менеджеру, он скоро с вами свяжется')
-			#reply_keyboard(chat_id_cur, 'Хотите просмотреть объявления?')
-			#flag_car[chat_id_cur] = 0
+		chats.append([rrr['result']['message_id'], chat_id_cur])
+		#send_message(message['message']['chat']['id'], '2. Введите марку автомобиля')
 		return 1
 
 	
@@ -813,13 +790,15 @@ def check_message(message):
 				for i in range (len(chats)):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-						#reply_keyboard(message['message']['chat']['id'], 'Хотите продолжить поиск?')
+						#reply_keyboard(message['message']['chat']['id'], 'Сообщение')
 				return 1
 
 
 	if str(message).find('file') > -1:
 		return 1
 
+	if flag_car[chat_id_cur] == 7:
+		flag_car[chat_id_cur] = 0
 	
 	if message['message']['text'] == 'Выставить свою машину':
 		send_message(message['message']['chat']['id'], '1. Введите ваш город')
@@ -838,17 +817,20 @@ def check_message(message):
 	
 
 	for name in admin_name:
-		if str(message['message']['chat']['username']) == str(name[0]) and name[1] == -1:
+		username = ""
+		if str(message['message']['chat']).find('username') > -1:
+			username = str(message['message']['chat']['username'])
+		if username == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
-		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
+		if username == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
 			send_message(name[1], "Введите ник менеджера и название салона (например, Мкад, 51-й километр) через пробел (для назначения менеджера по приему объявлений напишите просто Менеджер)")
 			flag[chat_id_cur] = 1
 			return 1
-		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Добавить админа':
+		if username == str(name[0]) and message['message']['text'] == 'Добавить админа':
 			send_message(name[1], "Введите ник админа")
 			flag_admin[chat_id_cur] = 1
 			return 1
-		if str(message['message']['chat']['username']) == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
+		if username == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
 			send_message(name[1], "Введите ник менеджера")
 			flag[chat_id_cur] = -1
 			return 1
@@ -881,16 +863,19 @@ def check_message(message):
 	
 	
 	for name in admin_name:
-		if str(message['message']['chat']['username']) == str(name[0]) and flag_admin[chat_id_cur] == 1:
+		username = ""
+		if str(message['message']['chat']).find('username') > -1:
+			username = str(message['message']['chat']['username'])
+		if username == str(name[0]) and flag_admin[chat_id_cur] == 1:
 			send_message(name[1], add_admin(message['message']['text']))
 			flag_admin[chat_id_cur] = 0
 			return 1
-		if str(message['message']['chat']['username']) == str(name[0]) and flag[chat_id_cur] == 1:
+		if username == str(name[0]) and flag[chat_id_cur] == 1:
 			send_message(name[1], add_manager(message['message']['text']))
 			flag[chat_id_cur] = 0
 			return 1
 
-		if str(message['message']['chat']['username']) == str(name[0]) and flag[chat_id_cur] == -1:
+		if username == str(name[0]) and flag[chat_id_cur] == -1:
 			send_message(name[1], delete_manager(message['message']['text']))
 			flag[chat_id_cur] = 0
 			return 1
@@ -932,23 +917,28 @@ def check_message(message):
 		if int(man_id) == -1:
 			send_message(message['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
 			return 1
-		send_message(man_id, 'Новая машина от пользователя ' + message['message']['chat']['username'] + ': город ' + message['message']['text'])
-		send_message(message['message']['chat']['id'], '2. Отправьте фото вашего авто')
+		#username = ""
+		#if str(message['message']['chat']).find('username') > -1:
+		#	username = str(message['message']['chat']['username'])
+		#else:
+		username = str(message['message']['chat']['first_name'])
+		send_message(man_id, 'Новая машина от пользователя ' + username + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + ': город ' + message['message']['text'])
+		send_message(message['message']['chat']['id'], '2. Введите марку автомобиля')
 		return 1
 
 
-	if len(cur_manager[chat_id_cur]) > 0:
-		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 2:
-			chats.append([send_message(cur_manager[chat_id_cur][0], 'От ' + message['message']['chat']['first_name'] + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+	#if len(cur_manager[chat_id_cur]) > 0:
+	#	if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 2:
+	#		chats.append([send_message(cur_manager[chat_id_cur][0], 'От ' + message['message']['chat']['first_name'] + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 			#	flag_car[chat_id_cur] = 0
-			if cur_manager[chat_id_cur][1].lower() == 'Manager'.lower():
-				reply_keyboard(message['message']['chat']['id'], 'Сообщение доставлено менеджеру')
-				return 1
-			editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
-			return 1
+	#		if cur_manager[chat_id_cur][1].lower() == 'Manager'.lower():
+	#			reply_keyboard(message['message']['chat']['id'], 'Сообщение доставлено менеджеру')
+	#			return 1
+	#		editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
+	#		return 1
 
-	if len(cur_manager[chat_id_cur]) > 0:
-		if int(cur_manager[chat_id_cur][0]) > -1:
+	elif len(cur_manager[chat_id_cur]) > 0:
+		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 0:
 			chats.append([send_message(cur_manager[chat_id_cur][0], 'От ' + message['message']['chat']['first_name'] + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 			editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
 			return 1
@@ -962,13 +952,85 @@ def check_message(message):
 		else:
 			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
 		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-		send_message(man, 'Сообщение от ' + message['message']['chat']['username'] + ' ' + str(message['message']['chat']['id'])[5:] + message['message']['text'])
+		#username = ""
+		#if str(message['message']['chat']).find('username') > -1:
+		#	username = str(message['message']['chat']['username'])
+		#else:
+		username = str(message['message']['chat']['first_name'])
+		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': Марка: ' + message['message']['text'])
+		send_message(message['message']['chat']['id'], '3. Отправьте модель')
+		flag_car[chat_id_cur] = 3
 		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
-		reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
-		flag_car[chat_id_cur] = 0
+		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
 		return 1
 
-	flag_car[chat_id_cur] = 0
+	if flag_car[chat_id_cur] == 3:
+		length = len(managers.columns)
+		for i in range(length):
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
+				break
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+		#username = ""
+		#if str(message['message']['chat']).find('username') > -1:
+		#	username = str(message['message']['chat']['username'])
+		#else:
+		username = str(message['message']['chat']['first_name'])
+		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': Модель: ' + message['message']['text'])
+		send_message(message['message']['chat']['id'], '4. Отправьте пробег')
+		flag_car[chat_id_cur] = 4
+		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
+		return 1
+
+
+	if flag_car[chat_id_cur] == 4:
+		length = len(managers.columns)
+		for i in range(length):
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
+				break
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+		#username = ""
+		#if str(message['message']['chat']).find('username') > -1:
+		#	username = str(message['message']['chat']['username'])
+		#else:
+		username = str(message['message']['chat']['first_name'])
+		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] +  ': Пробег: '+ message['message']['text'])
+		send_message(message['message']['chat']['id'], '5. Отправьте VIN')
+		flag_car[chat_id_cur] = 5
+		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
+		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
+		return 1
+
+
+	if flag_car[chat_id_cur] == 5:
+		length = len(managers.columns)
+		for i in range(length):
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
+				break
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+		#username = ""
+		#if str(message['message']['chat']).find('username') > -1:
+		#	username = str(message['message']['chat']['username'])
+		#else:
+		username = str(message['message']['chat']['first_name'])
+		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': VIN: ' + message['message']['text'])
+		send_message(message['message']['chat']['id'], '6. Отправьте фото')
+		flag_car[chat_id_cur] = 7
+		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
+		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
+		return 1
+
+	
+
+	#flag_car[chat_id_cur] = 0
 	
 	
 	
@@ -1049,12 +1111,12 @@ def run():
 	date = datetime.date.today()
 	tt = datetime.datetime.now()
 	fl = True
-	while fl:
-		try:
-			parse_data("2019-01-01")
-			fl = False
-		except:
-			time.sleep(1)
+	#while fl:
+	#	try:
+	parse_data("2019-01-01")
+	#		fl = False
+	#	except:
+	#		time.sleep(1)
 	it = {}
 	get_admins()
 	print("Admins: ", admin_name)
@@ -1075,7 +1137,7 @@ def run():
 		#time.sleep(0.02)
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
-		if int(cur_time.minute) >= int(tt.minute) + 15 or int(cur_time.hour) > int(tt.hour):
+		if int(cur_time.minute) >= int(tt.minute) + 15:
 			try:
 				thread3 = Thread(target = parse_data, args = [str(date.year) + '-' + str(date.month) + '-' + str(date.day)])
 				thread3.start()
@@ -1113,8 +1175,11 @@ def run():
 				if str(message).find('query') == -1:
 					if it[message['message']['chat']['id']] == 0:
 						length = len(managers.columns)
-						for name in admin_name:
-							if (message['message']['chat']['username'] == name[0]):	
+						username = ""
+						if str(message['message']['chat']).find('username') > -1:
+								username = message['message']['chat']['username']
+						for name in admin_name:						
+							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
 								reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
 								for i in range(length):
@@ -1124,7 +1189,7 @@ def run():
 						else:
 						#if True:
 							for j in range(length):
-								if str(message['message']['chat']['username']) == str(managers[j][0]):
+								if str(username) == str(managers[j][0]):
 									managers[j][2] = message['message']['chat']['id']
 									reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
 									break
