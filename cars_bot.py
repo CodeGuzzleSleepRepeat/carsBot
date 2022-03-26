@@ -1124,7 +1124,7 @@ def run():
 	it = {}
 	get_admins()
 	print("Admins: ", admin_name)
-	get_managers()
+	#get_managers()
 	print("Managers: ", managers)
 	#bot = Bot(TOKEN)
 	#dp = Dispatcher(bot, None, workers=4)
