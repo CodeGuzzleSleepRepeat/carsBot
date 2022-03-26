@@ -1095,6 +1095,7 @@ def check_query(message):
 			cur_manager[chat_id_cur][0] = -1
 
 		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
+		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' data[int(car_id[4:])][17]
 		#user = 'No_name'
 		#if message['callback_query']['message']['chat'].find('username') > -1:
 		#	user = message['callback_query']['message']['chat']['username']
@@ -1102,7 +1103,7 @@ def check_query(message):
 		#last_name = message['callback_query']['message']['chat']['last_name']
 		chat_id = message['callback_query']['message']['chat']['id']
 		if (not cur_manager[chat_id_cur][0] == -1):
-			chats.append([send_message(cur_manager[chat_id_cur][0], 'Сообщение от ' + first_name + ' ' + str(chat_id)[5:] + ' по поводу машины ' + car_id)['result']['message_id'], chat_id])
+			chats.append([send_message(cur_manager[chat_id_cur][0], 'Сообщение от ' + first_name + ' ' + str(chat_id)[5:] + ' по поводу машины ' + mes)['result']['message_id'], chat_id])
 			send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
 		else:
 			send_message(chat_id, 'К сожалению, менеджер еще не пользуется ботом')
