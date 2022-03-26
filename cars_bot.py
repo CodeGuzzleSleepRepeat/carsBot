@@ -174,7 +174,7 @@ def get_managers():
 			break
 		pos1 = line.find(' ')
 		pos2 = line.rfind(' ')
-		managers[0] = (line[:pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
+		managers[i] = (line[:pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
 		i += 1
 
 
@@ -663,7 +663,7 @@ def add_manager(str):
 	length_managers = len(managers.columns)
 	managers[length_managers] = [name, salon, '-1']
 
-	if length > 0:
+	if length_managers > 0:
 		file.write('\n')
 	file.write(name)
 	file.write(' ')
