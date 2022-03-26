@@ -1098,7 +1098,7 @@ def check_query(message):
 			cur_manager[chat_id_cur][0] = -1
 
 		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
-		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' data[int(car_id[4:])][17]
+		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17]
 		#user = 'No_name'
 		#if message['callback_query']['message']['chat'].find('username') > -1:
 		#	user = message['callback_query']['message']['chat']['username']
