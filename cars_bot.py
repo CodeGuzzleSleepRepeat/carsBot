@@ -167,6 +167,7 @@ def parse_data(date):
 def get_managers():
 	file = open('managers.txt', "r")
 	res = file.read()
+	print(res)
 	i = 0
 	arr = res.split('\n')
 	for line in arr:
@@ -661,7 +662,7 @@ def add_manager(str):
 
 	length = len(data)
 	length_managers = len(managers.columns)
-	managers[length_managers] = [name, salon, '-1']
+	managers[length_managers] = (name, salon, '-1')
 
 	if length_managers > 0:
 		file.write('\n')
@@ -802,10 +803,8 @@ def check_message(message):
 	
 	if message['message']['text'] == 'Выставить свою машину':
 		leng = len(managers.columns)
-		print(leng)
-		print(managers)
-		for i in range(leng - 1):
-			if managers[i][1].lower() == 'Менеджер'.lower():
+		for i in range(leng):
+			if managers[i][1].lower() == 'Менеджер'.lower() and int(managers[i][2]) > -1:
 				cur_manager[chat_id_cur][0] = managers[i][2]
 				cur_manager[chat_id_cur][1] = managers[i][1]
 				send_message(message['message']['chat']['id'], '1. Введите ваш город')
@@ -915,7 +914,7 @@ def check_message(message):
 		flag_car[chat_id_cur] = 2
 		length = len(managers.columns)
 		man_id = -1
-		for i in range(length - 1):
+		for i in range(length):
 			if (managers[i][1].lower() == 'Менеджер'.lower()):
 				man_id = managers[i][2]
 				break
@@ -950,7 +949,7 @@ def check_message(message):
 	
 	if flag_car[chat_id_cur] == 2:
 		length = len(managers.columns)
-		for i in range(length - 1):
+		for i in range(length):
 			if (managers[i][1].lower() == 'Менеджер'.lower()):
 				man = managers[i][2]
 				break
@@ -971,7 +970,7 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] == 3:
 		length = len(managers.columns)
-		for i in range(length - 1):
+		for i in range(length):
 			if (managers[i][1].lower() == 'Менеджер'.lower()):
 				man = managers[i][2]
 				break
@@ -992,7 +991,7 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] == 4:
 		length = len(managers.columns)
-		for i in range(length - 1):
+		for i in range(length):
 			if (managers[i][1].lower() == 'Менеджер'.lower()):
 				man = managers[i][2]
 				break
@@ -1014,7 +1013,7 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] == 5:
 		length = len(managers.columns)
-		for i in range(length - 1):
+		for i in range(length):
 			if (managers[i][1].lower() == 'Менеджер'.lower()):
 				man = managers[i][2]
 				break
@@ -1044,7 +1043,7 @@ def check_message(message):
 
 def find_manager(message):
 	length = len(managers.columns)
-	for i in range(length - 1):
+	for i in range(length):
 		message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower(), managers[i][1].lower()
 		if message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower() == managers[i][1].lower():
 			if int(managers[i][2]) > -1:
@@ -1178,9 +1177,22 @@ def run():
 					chat_ids.append(message['message']['chat']['id'])
 					it[message['message']['chat']['id']] = 0
 
+				
+				username = ''
+				length = len(managers.columns)
 				if str(message).find('query') == -1:
-					if it[message['message']['chat']['id']] == 0:
-						length = len(managers.columns)
+					if str(message['message']['chat']).find('username') > -1:
+						username = message['message']['chat']['username']
+						for i in range(length):
+							if str(managers[i][0]) == str(username):
+								managers[i][2] = message['message']['chat']['id']
+						for name in admin_name:						
+							if str(username) == name[0]:	
+								name[1] = message['message']['chat']['id']
+								
+
+				if str(message).find('query') == -1:
+					if it[message['message']['chat']['id']] == 0:						
 						username = ""
 						if str(message['message']['chat']).find('username') > -1:
 								username = message['message']['chat']['username']
@@ -1188,7 +1200,7 @@ def run():
 							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
 								reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
-								for i in range(length - 1):
+								for i in range(length):
 									if managers[i][0] == name[0]:
 										managers[i][2] = message['message']['chat']['id']
 								break
@@ -1229,4 +1241,5 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
