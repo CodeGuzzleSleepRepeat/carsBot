@@ -153,11 +153,11 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
-			j += 1
+			#j += 1
 		print("Downloading photos: " + str(i) + " done")
 		i += 1
 		data.append(ddd)
@@ -679,7 +679,7 @@ def delete_manager(name):
 	length = len(managers.columns)
 	f = False
 	file = open('managers.txt', "w")
-	for i in range(length - 1):
+	for i in range(length):
 		if (managers[i][0] == name):
 			managers = managers.drop(columns = i)
 			f = True
@@ -1184,6 +1184,8 @@ def run():
 					if str(message['message']['chat']).find('username') > -1:
 						username = message['message']['chat']['username']
 						for i in range(length):
+							if len(managers[i]) == 0:
+								break
 							if str(managers[i][0]) == str(username):
 								managers[i][2] = message['message']['chat']['id']
 						for name in admin_name:						
