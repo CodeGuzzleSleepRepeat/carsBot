@@ -1089,8 +1089,11 @@ def check_query(message):
 					if chats[i][1] ==  message['query']['chat']['id']:
 						chats.pop(i)
 						break    						#if manager == client - change?
-			cur_manager[chat_id_cur][0] = managers[man][2]
-			cur_manager[chat_id_cur][1] = managers[man][1]
+			try:
+				cur_manager[chat_id_cur][0] = managers[man][2]
+				cur_manager[chat_id_cur][1] = managers[man][1]
+			except:
+				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
 			cur_manager[chat_id_cur][0] = -1
 
