@@ -157,7 +157,7 @@ def parse_data(date):
 			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
 			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
-			#j += 1
+			j += 1
 		print("Downloading photos: " + str(i) + " done")
 		i += 1
 		data.append(ddd)
@@ -596,7 +596,7 @@ def reply_keyboard(chat_id, text):
 
 
 def reply_admin_keyboard(chat_id, text):
-	reply_markup = { "keyboard": [["Добавить админа"], ["Назначить менеджера"], ["Удалить менеджера"]], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [["Добавить админа"], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
@@ -633,6 +633,7 @@ def inline_keyboard(chat_id, ddd):
 	text += '\n' + ''.join(reversed(price))
 	file =  {'photo' : open(ddd[18], 'rb')}
 	salon = ddd[2][7:]
+	print(ddd[0] + ' ' + ddd[1] + ' ' + ddd[17])
 	reply_markup = {'inline_keyboard': [[{'text': 'Подробнее', 'callback_data' : 'show' + ddd[0] + '_' + salon}, {'text' : 'Связаться с менеджером', 'callback_data' : 'manager' + ddd[0] + '_' + salon}]]}
 	data = {'chat_id': chat_id, 'caption': text, 'reply_markup': json.dumps(reply_markup)}
 	return requests.post(f'{URL}{TOKEN}/sendPhoto', files=file, data = data)
@@ -680,12 +681,13 @@ def delete_manager(name):
 	f = False
 	file = open('managers.txt', "w")
 	for i in range(length):
-		if (managers[i][0] == name[1:]):
+		print(str(managers[i][0]), str(name))
+		if (str(managers[i][0]) == str(name[1:])):
 			managers = managers.drop(columns = i)
 			f = True
 	
 	length = len(managers.columns)
-	for i in range(length - 1):
+	for i in range(length):
 		file.write(managers[i][0])
 		file.write(' ')
 		file.write(managers[i][1])
@@ -823,6 +825,10 @@ def check_message(message):
 		username = ""
 		if str(message['message']['chat']).find('username') > -1:
 			username = str(message['message']['chat']['username'])
+		if username == name[0] and message['message']['text'] == 'Показать менеджеров':
+			length_m = len(managers)
+			for i in range(length_m):
+				send_message(message['message']['chat']['id'], managers[i][0] + ' ' + managers[i][1])
 		if username == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
 		if username == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
@@ -1097,8 +1103,8 @@ def check_query(message):
 		else:
 			cur_manager[chat_id_cur][0] = -1
 
-		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
-		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17]
+		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
+		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 
 		#user = 'No_name'
 		#if message['callback_query']['message']['chat'].find('username') > -1:
 		#	user = message['callback_query']['message']['chat']['username']
@@ -1128,7 +1134,7 @@ def run():
 	it = {}
 	get_admins()
 	print("Admins: ", admin_name)
-	#get_managers()
+	get_managers()
 	print("Managers: ", managers)
 	#bot = Bot(TOKEN)
 	#dp = Dispatcher(bot, None, workers=4)
@@ -1169,17 +1175,18 @@ def run():
 					if str(message).find('message') > -1:
 						if message['message']['chat']['id'] == ch_id:
 							break
-				elif str(message).find('message') > -1:	
-					flag[message['message']['chat']['id']] = 0
-					flag_data[message['message']['chat']['id']] = 0
-					flag_car[message['message']['chat']['id']] = 0
-					flag_admin[message['message']['chat']['id']] = 0
-					counter[message['message']['chat']['id']] = 0
-					num_of_photos[message['message']['chat']['id']] = 0
-					cur_manager[message['message']['chat']['id']] = [-1, -1]
-					gl_clas[message['message']['chat']['id']] = '' 
-					chat_ids.append(message['message']['chat']['id'])
-					it[message['message']['chat']['id']] = 0
+				else:
+					if str(message).find('message') > -1:	
+						flag[message['message']['chat']['id']] = 0
+						flag_data[message['message']['chat']['id']] = 0
+						flag_car[message['message']['chat']['id']] = 0
+						flag_admin[message['message']['chat']['id']] = 0
+						counter[message['message']['chat']['id']] = 0
+						num_of_photos[message['message']['chat']['id']] = 0
+						cur_manager[message['message']['chat']['id']] = [-1, -1]
+						gl_clas[message['message']['chat']['id']] = '' 
+						chat_ids.append(message['message']['chat']['id'])
+						it[message['message']['chat']['id']] = 0
 
 				
 				username = ''
@@ -1247,5 +1254,6 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
