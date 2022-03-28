@@ -1231,7 +1231,7 @@ def run():
 				
 				username = ''
 				length = len(managers.columns)
-				if str(message).find('query') == -1:
+				if str(message).find('message') > -1:
 					if str(message['message']['chat']).find('username') > -1:
 						username = message['message']['chat']['username']
 						for i in range(length):
@@ -1247,7 +1247,7 @@ def run():
 								name[1] = message['message']['chat']['id']
 								
 
-				if str(message).find('query') == -1:
+				if str(message).find('message') > -1:
 					if it[message['message']['chat']['id']] == 0:						
 						username = ""
 						if str(message['message']['chat']).find('username') > -1:
@@ -1300,6 +1300,7 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
 
