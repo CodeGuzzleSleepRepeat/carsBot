@@ -683,19 +683,24 @@ def delete_manager(name):
 	f = False
 	file = open('managers.txt', "w")
 	for i in range(length):
-		print(str(managers[i][0]), str(name))
-		if (str(managers[i][0]) == str(name[1:])):
-			managers = managers.drop(columns = i)
-			f = True
+		try:
+			if (str(managers[i][0]) == str(name[1:])):
+				managers = managers.drop(columns = i)
+				f = True
+		except:
+			break
 	
 	length = len(managers.columns)
 	for i in range(length):
-		file.write(managers[i][0])
-		file.write(' ')
-		file.write(managers[i][1])
-		file.write(' ')
-		file.write(str(managers[i][2]))
-		file.write('\n')
+		try:
+			file.write(managers[i][0])
+			file.write(' ')
+			file.write(managers[i][1])
+			file.write(' ')
+			file.write(str(managers[i][2]))
+			file.write('\n')
+		except:
+			break
 	if f:
 		return 'Менеджер успешно удален'
 	return 'Такого менеджера нет'
@@ -751,9 +756,12 @@ def send_file(message):
 	global num_of_photos
 	man = ""
 	length = len(managers.columns)
-	for i in range(length - 1):
-		if (managers[i][1].lower() == 'Менеджер'.lower()):
-			man = managers[i][2]
+	for i in range(length):
+		try:
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
+				break
+		except:
 			break
 	else:
 		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
@@ -808,10 +816,13 @@ def check_message(message):
 	if message['message']['text'] == 'Выставить свою машину':
 		leng = len(managers.columns)
 		for i in range(leng):
-			if managers[i][1].lower() == 'Менеджер'.lower() and int(managers[i][2]) > -1:
-				cur_manager[chat_id_cur][0] = managers[i][2]
-				cur_manager[chat_id_cur][1] = managers[i][1]
-				send_message(message['message']['chat']['id'], '1. Введите ваш город')
+			try:
+				if managers[i][1].lower() == 'Менеджер'.lower() and int(managers[i][2]) > -1:
+					cur_manager[chat_id_cur][0] = managers[i][2]
+					cur_manager[chat_id_cur][1] = managers[i][1]
+					send_message(message['message']['chat']['id'], '1. Введите ваш город')
+					break
+			except:
 				break
 		else:
 			cur_manager[chat_id_cur][0] = -1
@@ -857,22 +868,28 @@ def check_message(message):
 	for i in range(length):
 		#if message['message']['chat']['username'] == managers[i][0] and managers[i][2] == -1:
 		#	managers[i][2] = message['message']['chat']['id']
-		if int(message['message']['chat']['id']) == int(managers[i][2]) and message['message']['text'] == 'Удалить авто':
-			send_message(managers[i][2], "Введите id авто")
-			flag_data[chat_id_cur] = 1
-			return 1
+		try:
+			if int(message['message']['chat']['id']) == int(managers[i][2]) and message['message']['text'] == 'Удалить авто':
+				send_message(managers[i][2], "Введите id авто")
+				flag_data[chat_id_cur] = 1
+				return 1
+		except:
+			break
 	
-	for i in range(length - 1):
-		if int(message['message']['chat']['id']) == int(managers[i][2]) and flag_data[chat_id_cur] == 1:
-			for j in range(length_data):
-				if data[j][0][4:] == message['message']['text']:
-					data = data.pop(i)
-					send_message(managers[i][2], "Авто успешно удалено")
-					break
-			else:
-				send_message(managers[i][2], 'Авто с таким id не найдено')
-			flag_data[chat_id_cur] = 0
-			return 1
+	for i in range(length):
+		try:
+			if int(message['message']['chat']['id']) == int(managers[i][2]) and flag_data[chat_id_cur] == 1:
+				for j in range(length_data):
+					if data[j][0][4:] == message['message']['text']:
+						data = data.pop(i)
+						send_message(managers[i][2], "Авто успешно удалено")
+						break
+				else:
+					send_message(managers[i][2], 'Авто с таким id не найдено')
+				flag_data[chat_id_cur] = 0
+				return 1
+		except:
+			break
 
 	
 	
@@ -926,8 +943,11 @@ def check_message(message):
 		length = len(managers.columns)
 		man_id = -1
 		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man_id = managers[i][2]
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man_id = managers[i][2]
+					break
+			except:
 				break
 		if int(man_id) == -1:
 			send_message(message['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
@@ -961,8 +981,11 @@ def check_message(message):
 	if flag_car[chat_id_cur] == 2:
 		length = len(managers.columns)
 		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
 				break
 		else:
 			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
@@ -982,8 +1005,11 @@ def check_message(message):
 	if flag_car[chat_id_cur] == 3:
 		length = len(managers.columns)
 		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
 				break
 		else:
 			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
@@ -1003,8 +1029,11 @@ def check_message(message):
 	if flag_car[chat_id_cur] == 4:
 		length = len(managers.columns)
 		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
 				break
 		else:
 			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
@@ -1025,8 +1054,11 @@ def check_message(message):
 	if flag_car[chat_id_cur] == 5:
 		length = len(managers.columns)
 		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
 				break
 		else:
 			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
@@ -1055,10 +1087,13 @@ def check_message(message):
 def find_manager(message):
 	length = len(managers.columns)
 	for i in range(length):
-		message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower(), managers[i][1].lower()
-		if message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower() == managers[i][1].lower():
-			if int(managers[i][2]) > -1:
-				return i
+		try:
+			message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower(), managers[i][1].lower()
+			if message['callback_query']['data'][message['callback_query']['data'].find('_') + 1:].lower() == managers[i][1].lower():
+				if int(managers[i][2]) > -1:
+					return i
+		except:
+			break
 	return -1
 
 
@@ -1222,8 +1257,11 @@ def run():
 								name[1] = message['message']['chat']['id']
 								reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
 								for i in range(length):
-									if managers[i][0] == name[0]:
-										managers[i][2] = message['message']['chat']['id']
+									try:
+										if managers[i][0] == name[0]:
+											managers[i][2] = message['message']['chat']['id']
+									except:
+										break
 								break
 						else:
 						#if True:
@@ -1262,6 +1300,7 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
 
