@@ -655,6 +655,8 @@ def add_manager(str):
 	global managers
 	file = open('managers.txt', "a+")
 	pos = str.find(' ')
+	if pos == -1 or pos == len(str) - 1:
+		return 'Не указан салон (или слово Менеджер для менеджера по приему авто)'
 	name = str[:pos]
 	salon = str[pos + 1:]
 	if (name[0] != '@'):
@@ -673,7 +675,7 @@ def add_manager(str):
 	file.write(' ')
 	file.write('-1')
 	#file.write('\n')
-	return 'Менеджер успешно добавлен'
+	return 'Менеджер успешно добавлен, чтобы начать работу, менеджер должен отправить любое сообщение в бота'
 
 def delete_manager(name):
 	global managers
@@ -1254,6 +1256,7 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
 
