@@ -153,9 +153,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 		print("Downloading photos: " + str(i) + " done")
@@ -1197,10 +1197,13 @@ def run():
 					if str(message['message']['chat']).find('username') > -1:
 						username = message['message']['chat']['username']
 						for i in range(length):
-							if len(managers[i]) == 0:
+							try:
+								if len(managers[i]) == 0:
+									break
+								if str(managers[i][0]) == str(username):
+									managers[i][2] = message['message']['chat']['id']
+							except:
 								break
-							if str(managers[i][0]) == str(username):
-								managers[i][2] = message['message']['chat']['id']
 						for name in admin_name:						
 							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
