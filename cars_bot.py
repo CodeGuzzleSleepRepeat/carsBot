@@ -1169,7 +1169,7 @@ def run():
 					if str(message).find('message') > -1:
 						if message['message']['chat']['id'] == ch_id:
 							break
-				else:	
+				elif str(message).find('message') > -1:	
 					flag[message['message']['chat']['id']] = 0
 					flag_data[message['message']['chat']['id']] = 0
 					flag_car[message['message']['chat']['id']] = 0
