@@ -830,7 +830,10 @@ def check_message(message):
 		if username == name[0] and message['message']['text'] == 'Показать менеджеров':
 			length_m = len(managers)
 			for i in range(length_m):
-				send_message(message['message']['chat']['id'], managers[i][0] + ' ' + managers[i][1])
+				try:
+					send_message(message['message']['chat']['id'], managers[i][0] + ' ' + managers[i][1])
+				except:
+					break
 		if username == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
 		if username == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
