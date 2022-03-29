@@ -1132,7 +1132,7 @@ def check_query(message):
 				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + managers[man][2] + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[1] + ' еще раз свяжитесь с ним')
 				length_chats = len(chats)
 				for i in range(length_chats):
-					if chats[i][1] ==  message['callback_ query']['message]['chat']['id']:
+					if chats[i][1] ==  message['callback_ query']['message']['chat']['id']:
 						chats.pop(i)
 						break    						#if manager == client - change?
 			try:
