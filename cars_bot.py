@@ -1247,7 +1247,7 @@ def run():
 								name[1] = message['message']['chat']['id']
 								
 
-				if str(message).find('message') > -1:
+				if str(message).find('query') == -1:
 					if it[message['message']['chat']['id']] == 0:						
 						username = ""
 						if str(message['message']['chat']).find('username') > -1:
