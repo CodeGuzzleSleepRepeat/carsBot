@@ -153,9 +153,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 		print("Downloading photos: " + str(i) + " done")
@@ -1129,10 +1129,10 @@ def check_query(message):
 		man = find_manager(message)
 		if not man == -1:
 			if not cur_manager[chat_id_cur][0] == -1 and not cur_manager[chat_id_cur][0] == managers[man][2]:
-				send_message(message['query']['chat']['id'], 'Вы начали диалог с менеджером салона ' + managers[man][2] + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[1] + ' еще раз свяжитесь с ним')
+				send_message(message['callback_query']['chat']['id'], 'Вы начали диалог с менеджером салона ' + managers[man][2] + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[1] + ' еще раз свяжитесь с ним')
 				length_chats = len(chats)
 				for i in range(length_chats):
-					if chats[i][1] ==  message['query']['chat']['id']:
+					if chats[i][1] ==  message['callback_ query']['chat']['id']:
 						chats.pop(i)
 						break    						#if manager == client - change?
 			try:
@@ -1144,7 +1144,7 @@ def check_query(message):
 			cur_manager[chat_id_cur][0] = -1
 
 		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
-		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 
+		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
 		#user = 'No_name'
 		#if message['callback_query']['message']['chat'].find('username') > -1:
 		#	user = message['callback_query']['message']['chat']['username']
@@ -1247,7 +1247,7 @@ def run():
 								name[1] = message['message']['chat']['id']
 								
 
-				if str(message).find('query') == -1:
+				if str(message).find('message') > -1:
 					if it[message['message']['chat']['id']] == 0:						
 						username = ""
 						if str(message['message']['chat']).find('username') > -1:
@@ -1266,9 +1266,12 @@ def run():
 						else:
 						#if True:
 							for j in range(length):
-								if str(username) == str(managers[j][0]):
-									managers[j][2] = message['message']['chat']['id']
-									reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
+								try:
+									if str(username) == str(managers[j][0]):
+										managers[j][2] = message['message']['chat']['id']
+										reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
+										break
+								except:
 									break
 							else:
 								reply_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
@@ -1300,6 +1303,7 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
 
