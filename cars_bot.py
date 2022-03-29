@@ -769,7 +769,7 @@ def send_file(message):
 
 	send_message(man, 'Сообщение от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 	#send_message(message['message']['chat']['id'], 'Фото доставлены')
-	mes = message['message']['photo'][3]['file_id']
+	mes = message['message']['photo'][0]['file_id']
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
 
 
