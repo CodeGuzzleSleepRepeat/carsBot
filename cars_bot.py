@@ -45,6 +45,8 @@ counter = {}
 num_of_photos = {}
 gl_clas = {}
 cur_manager = {}
+cur_message = {}
+it2 = {}
 
 start_pos = 20
 
@@ -153,9 +155,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 		print("Downloading photos: " + str(i) + " done")
@@ -167,12 +169,11 @@ def parse_data(date):
 def get_managers():
 	file = open('managers.txt', "r")
 	res = file.read()
-	print(res)
 	i = 0
 	arr = res.split('\n')
 	for line in arr:
 		if line == '':
-			break
+			continue
 		pos1 = line.find(' ')
 		pos2 = line.rfind(' ')
 		managers[i] = (line[:pos1], line[pos1 + 1: pos2], line[pos2 + 1:])
@@ -568,10 +569,14 @@ def editMessageCaption(mes_id, chat_id, text, cur, photo_num, salon):
 	caption = '\n'.join(data[int(text)][1:17])
 	price = ''
 	l = len(data[int(text)][17])
+	f = True
+	
 	for i in range(l):
 		price += data[int(text)][17][l - i - 1]
-		if i % 3 == 2:
+		if i % 3 == 2 and f:
 			price += ' '
+		if data[int(text)][17][l - i - 1] == ':':
+			f = False
 	p = price.rfind(' ')
 	price = price[:p] + price[p + 1:]
 	caption += '\n' + ''.join(reversed(price))
@@ -612,6 +617,9 @@ def send_photo_file(chat_id, img, caption):
 	file = {'photo' : open(img, 'rb'), 'caption' : caption}
 	requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}', data=file)
 
+def send_photo_file_id(chat_id, img, caption):
+	return requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}&photo={img}&caption={caption}')
+
 def send_message(chat_id, text):
 	return json.loads(requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&text={text}').text)
 
@@ -624,16 +632,20 @@ def inline_keyboard(chat_id, ddd):
 	text = '\n'.join(ddd[1:5])
 	l = len(ddd[17])
 	price = ''
+	f = True
+	
 	for i in range(l):
 		price += ddd[17][l - i - 1]
-		if i % 3 == 2 and i != 0:
+		if i % 3 == 2 and f:
 			price += ' '
+		if ddd[17][l - i - 1] == ':':
+			f = False
+	
 	p = price.rfind(' ')
 	price = price[:p] + price[p + 1:]
 	text += '\n' + ''.join(reversed(price))
 	file =  {'photo' : open(ddd[18], 'rb')}
 	salon = ddd[2][7:]
-	print(ddd[0] + ' ' + ddd[1] + ' ' + ddd[17])
 	reply_markup = {'inline_keyboard': [[{'text': 'Подробнее', 'callback_data' : 'show' + ddd[0] + '_' + salon}, {'text' : 'Связаться с менеджером', 'callback_data' : 'manager' + ddd[0] + '_' + salon}]]}
 	data = {'chat_id': chat_id, 'caption': text, 'reply_markup': json.dumps(reply_markup)}
 	return requests.post(f'{URL}{TOKEN}/sendPhoto', files=file, data = data)
@@ -649,6 +661,7 @@ def add_admin(str):
 	file.write(' ')
 	file.write('-1')
 	file.write('\n')
+	it2[str[1:]] = 1
 	return 'Админ успешно добавлен'
 
 def add_manager(str):
@@ -663,10 +676,8 @@ def add_manager(str):
 		return 'Неверный ник'
 	name = name[1:]
 
-	length = len(data)
 	length_managers = len(managers.columns)
 	managers[length_managers] = (name, salon, '-1')
-
 	if length_managers > 0:
 		file.write('\n')
 	file.write(name)
@@ -674,7 +685,7 @@ def add_manager(str):
 	file.write(salon)
 	file.write(' ')
 	file.write('-1')
-	#file.write('\n')
+	it2[name] = 1
 	return 'Менеджер успешно добавлен, чтобы начать работу, менеджер должен отправить любое сообщение в бота'
 
 def delete_manager(name):
@@ -684,11 +695,16 @@ def delete_manager(name):
 	file = open('managers.txt', "w")
 	for i in range(length):
 		try:
+			if f:
+				managers[i] = managers[i - 1]
 			if (str(managers[i][0]) == str(name[1:])):
-				managers = managers.drop(columns = i)
+				#managers = managers.drop(columns = i)
 				f = True
 		except:
 			break
+	if f:
+		managers = managers.drop(columns = length - 1)
+	
 	
 	length = len(managers.columns)
 	for i in range(length):
@@ -701,6 +717,9 @@ def delete_manager(name):
 			file.write('\n')
 		except:
 			break
+
+	it2[name[1:]] = 1
+
 	if f:
 		return 'Менеджер успешно удален'
 	return 'Такого менеджера нет'
@@ -709,7 +728,6 @@ def delete_manager(name):
 
 
 def shpw_one_clas(message, clas, num, count):
-
 	global last_clas
 	
 	price1 = 0
@@ -767,10 +785,51 @@ def send_file(message):
 		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
 		return -1
 
-	send_message(man, 'Сообщение от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+	if str(message).find('caption') > -1:
+		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
+	send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 	#send_message(message['message']['chat']['id'], 'Фото доставлены')
 	mes = message['message']['photo'][0]['file_id']
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
+
+def send_car_data(message):
+	length = len(managers.columns)
+	man_id = -1
+	for i in range(length):
+		try:
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man_id = managers[i][2]
+				break
+		except:
+			break
+
+	username = str(message['message']['chat']['first_name'])
+	try:
+		send_message(man_id, 'Сообщение от пользователя ' + username + ' id ' + str(message['message']['chat']['id'])[5:] + ':\n' + str(cur_message[message['message']['chat']['id']]))
+	except:
+		send_message(message['message']['chat']['id'], 'Что-то пошло не так, пожалуйста, отправьте сообщение повторно')
+	flag_car[message['message']['chat']['id']] = 0
+
+def send_sticker(message):
+	man = ""
+	length = len(managers.columns)
+	for i in range(length):
+		try:
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
+				break
+		except:
+			break
+	else:
+		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+		return -1
+
+	if str(message).find('caption') > -1:
+		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
+	send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+	mes = message['message']['sticker']['file_id']
+	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
+
 
 
 
@@ -786,14 +845,28 @@ def check_message(message):
 	global flag_car
 
 	chat_id_cur = message['message']['chat']['id']
-	
+
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
 		chats.append([rrr['result']['message_id'], chat_id_cur])
-		#send_message(message['message']['chat']['id'], '2. Введите марку автомобиля')
 		return 1
+	"""
+	if str(message).find('sticker') > -1 and flag_car[chat_id_cur] == 7:
+		rrr = send_sticker(message).json()
+		if rrr == -1:
+			return 1
+		chats.append([rrr['result']['message_id'], chat_id_cur])
+		return 1
+	"""
+
+	if flag_car[chat_id_cur] == 7:
+		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
+		send_car_data(message)
+		
+
+
 
 	
 	if str(message).find('reply_to_message') > -1:
@@ -802,7 +875,13 @@ def check_message(message):
 			if str(message['message']['chat']['id']) == str(managers[j][2]):
 				for i in range (len(chats)):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
-						chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+						if str(message['message']).find('photo') > -1:
+							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + message['message']['caption'])['result']['message_id'], message['message']['chat']['id']])
+						try:
+							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+						except:
+							#chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['caption'])['result']['message_id'], message['message']['chat']['id']])
+							break
 						#reply_keyboard(message['message']['chat']['id'], 'Сообщение')
 				return 1
 
@@ -810,8 +889,6 @@ def check_message(message):
 	if str(message).find('file') > -1:
 		return 1
 
-	if flag_car[chat_id_cur] == 7:
-		flag_car[chat_id_cur] = 0
 	
 	if message['message']['text'] == 'Выставить свою машину':
 		leng = len(managers.columns)
@@ -839,7 +916,7 @@ def check_message(message):
 		if str(message['message']['chat']).find('username') > -1:
 			username = str(message['message']['chat']['username'])
 		if username == name[0] and message['message']['text'] == 'Показать менеджеров':
-			length_m = len(managers)
+			length_m = len(managers.columns)
 			for i in range(length_m):
 				try:
 					send_message(message['message']['chat']['id'], managers[i][0] + ' ' + managers[i][1])
@@ -866,8 +943,6 @@ def check_message(message):
 
 	
 	for i in range(length):
-		#if message['message']['chat']['username'] == managers[i][0] and managers[i][2] == -1:
-		#	managers[i][2] = message['message']['chat']['id']
 		try:
 			if int(message['message']['chat']['id']) == int(managers[i][2]) and message['message']['text'] == 'Удалить авто':
 				send_message(managers[i][2], "Введите id авто")
@@ -925,21 +1000,11 @@ def check_message(message):
 		shpw_one_clas(message, clas, num, counter[chat_id_cur])
 		return 1
 	
-	"""
-	if flag_car[chat_id_cur] == 2:
-		length = len(managers.columns)
-		for i in range(length):
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		return 1
-		"""
 	
 	if flag_car[chat_id_cur] == 1:
 		
 		flag_car[chat_id_cur] = 2
+		
 		length = len(managers.columns)
 		man_id = -1
 		for i in range(length):
@@ -952,25 +1017,12 @@ def check_message(message):
 		if int(man_id) == -1:
 			send_message(message['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
 			return 1
-		#username = ""
-		#if str(message['message']['chat']).find('username') > -1:
-		#	username = str(message['message']['chat']['username'])
-		#else:
-		username = str(message['message']['chat']['first_name'])
-		send_message(man_id, 'Новая машина от пользователя ' + username + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + ': город ' + message['message']['text'])
+		cur_message[message['message']['chat']['id']] += 'Город: ' + message['message']['text'] + '\n'
 		send_message(message['message']['chat']['id'], '2. Введите марку автомобиля')
 		return 1
 
 
-	#if len(cur_manager[chat_id_cur]) > 0:
-	#	if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 2:
-	#		chats.append([send_message(cur_manager[chat_id_cur][0], 'От ' + message['message']['chat']['first_name'] + ' id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-			#	flag_car[chat_id_cur] = 0
-	#		if cur_manager[chat_id_cur][1].lower() == 'Manager'.lower():
-	#			reply_keyboard(message['message']['chat']['id'], 'Сообщение доставлено менеджеру')
-	#			return 1
-	#		editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
-	#		return 1
+	
 
 	elif len(cur_manager[chat_id_cur]) > 0:
 		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 0:
@@ -979,100 +1031,29 @@ def check_message(message):
 			return 1
 	
 	if flag_car[chat_id_cur] == 2:
-		length = len(managers.columns)
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-		#username = ""
-		#if str(message['message']['chat']).find('username') > -1:
-		#	username = str(message['message']['chat']['username'])
-		#else:
-		username = str(message['message']['chat']['first_name'])
-		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': Марка: ' + message['message']['text'])
+		cur_message[message['message']['chat']['id']] += 'Марка: ' + message['message']['text'] + '\n'
 		send_message(message['message']['chat']['id'], '3. Отправьте модель')
 		flag_car[chat_id_cur] = 3
-		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
-		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
 		return 1
 
 	if flag_car[chat_id_cur] == 3:
-		length = len(managers.columns)
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-		#username = ""
-		#if str(message['message']['chat']).find('username') > -1:
-		#	username = str(message['message']['chat']['username'])
-		#else:
-		username = str(message['message']['chat']['first_name'])
-		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': Модель: ' + message['message']['text'])
+		cur_message[message['message']['chat']['id']] += 'Модель: ' + message['message']['text'] + '\n'
 		send_message(message['message']['chat']['id'], '4. Отправьте пробег')
 		flag_car[chat_id_cur] = 4
-		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
 		return 1
 
 
 	if flag_car[chat_id_cur] == 4:
-		length = len(managers.columns)
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-		#username = ""
-		#if str(message['message']['chat']).find('username') > -1:
-		#	username = str(message['message']['chat']['username'])
-		#else:
-		username = str(message['message']['chat']['first_name'])
-		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] +  ': Пробег: '+ message['message']['text'])
+		cur_message[message['message']['chat']['id']] += 'Пробег: '+ message['message']['text'] + '\n'
 		send_message(message['message']['chat']['id'], '5. Отправьте VIN')
 		flag_car[chat_id_cur] = 5
-		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
-		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
 		return 1
 
 
 	if flag_car[chat_id_cur] == 5:
-		length = len(managers.columns)
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		#chats.append([send_message(man, 'Новая машина от пользователя: ' + message['message']['chat']['username'] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-		#username = ""
-		#if str(message['message']['chat']).find('username') > -1:
-		#	username = str(message['message']['chat']['username'])
-		#else:
-		username = str(message['message']['chat']['first_name'])
-		send_message(man, 'Сообщение от ' + username + ' ' + str(message['message']['chat']['id'])[5:] + ': VIN: ' + message['message']['text'])
-		send_message(message['message']['chat']['id'], '6. Отправьте фото')
+		cur_message[message['message']['chat']['id']] += 'VIN: ' + message['message']['text'] + '\n'
+		send_message(message['message']['chat']['id'], '6. Отправьте фото и ОТДЕЛЬНЫМ СООБЩЕНИЕМ желаемую цену')
 		flag_car[chat_id_cur] = 7
-		#send_message(message['message']['chat']['id'], 'Данные отправлены менеджеру, он скоро с вами свяжется')
-		#reply_keyboard(message['message']['chat']['id'], 'Хотите посмотреть объявления?')
 		return 1
 
 	
@@ -1104,14 +1085,10 @@ def check_query(message):
 
 
 	global cur_manager
-	#if message['callback_query']['data'].find('show') > -1:
-	#	editMessageCaption(message['callback_query']['message']['message_id'], message['callback_query']['from']['id'], message['callback_query']['data'][4], 'hide', 4, message['callback_query']['data'].split('_')[1])
-	#	return
 
 	chat_id_cur = message['callback_query']['message']['chat']['id']
 
 	if message['callback_query']['data'].find('show') > -1:
-		#print(message['callback_query']['data']['file'].text)
 		pos = message['callback_query']['data'].find('_')
 		for i in range(len(data)):
 			if data[i][0] == 'id: ' + message['callback_query']['data'][8:pos]:
@@ -1119,43 +1096,34 @@ def check_query(message):
 		editMessageCaption(message['callback_query']['message']['message_id'], message['callback_query']['from']['id'], res, 'hide', 17, message['callback_query']['data'][pos + 1:])
 		return
 
-	#if message['callback_query']['data'].find('hide') > -1:
-	#	editMessageCaptionHide(message['callback_query']['message']['message_id'], message['callback_query']['from']['id'], message['callback_query']['data'][4], 'show', message['callback_query']['data'].split('_')[1])
-	#	return
-	#if message['callback_query']['data'].find('next') > -1:
-	#	editMessageCaption(message['callback_query']['message']['message_id'], message['callback_query']['from']['id'], message['callback_query']['data'][4], 'hide', message['callback_query']['data'].split('_')[2], message['callback_query']['data'].split('_')[1])
-	#	return
 	if message['callback_query']['data'].find('manager') > -1:
 		man = find_manager(message)
 		if not man == -1:
 			if not cur_manager[chat_id_cur][0] == -1 and not cur_manager[chat_id_cur][0] == managers[man][2]:
-				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][2]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[1] + ' еще раз свяжитесь с ним')
+				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][2]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[chat_id_cur][1] + ' еще раз свяжитесь с ним')
 				length_chats = len(chats)
 				for i in range(length_chats):
 					if chats[i][1] ==  message['callback_ query']['message']['chat']['id']:
 						chats.pop(i)
 						break    						#if manager == client - change?
-			try:
+			if True:
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
-			except:
+				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
+				mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
+				user = ''
+				if str(message['callback_query']['message']['chat']).find('username') > -1:
+					user = message['callback_query']['message']['chat']['username'] + ' '
+				first_name = user + message['callback_query']['message']['chat']['first_name']
+				#last_name = message['callback_query']['message']['chat']['last_name']
+				chat_id = message['callback_query']['message']['chat']['id']
+				chats.append([send_message(cur_manager[chat_id_cur][0], 'Сообщение от ' + first_name + ' ' + str(chat_id)[5:] + ' по поводу машины ' + mes)['result']['message_id'], chat_id])
+				send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
+			else:
 				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
-			cur_manager[chat_id_cur][0] = -1
-
-		car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
-		mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
-		#user = 'No_name'
-		#if message['callback_query']['message']['chat'].find('username') > -1:
-		#	user = message['callback_query']['message']['chat']['username']
-		first_name = message['callback_query']['message']['chat']['first_name']
-		#last_name = message['callback_query']['message']['chat']['last_name']
-		chat_id = message['callback_query']['message']['chat']['id']
-		if (not cur_manager[chat_id_cur][0] == -1):
-			chats.append([send_message(cur_manager[chat_id_cur][0], 'Сообщение от ' + first_name + ' ' + str(chat_id)[5:] + ' по поводу машины ' + mes)['result']['message_id'], chat_id])
-			send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
-		else:
-			send_message(chat_id, 'К сожалению, менеджер еще не пользуется ботом')
+			send_message(message['callback_query']['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
+			#cur_manager[chat_id_cur][0] = -1
 		return
 
 
@@ -1226,9 +1194,12 @@ def run():
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 						gl_clas[message['message']['chat']['id']] = '' 
 						chat_ids.append(message['message']['chat']['id'])
+						cur_message[message['message']['chat']['id']] = ''
 						it[message['message']['chat']['id']] = 0
+						if str(message).find('username') > -1:
+							it2[message['message']['chat']['username']] = 0
 
-				
+
 				username = ''
 				length = len(managers.columns)
 				if str(message).find('query') == -1:
@@ -1246,16 +1217,20 @@ def run():
 							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
 								
+				if str(message).find('username') > -1 and str(message).find('query') == -1:
+					if it2[message['message']['chat']['username']] == 1:
+						it[message['message']['chat']['id']] = 0
 
 				if str(message).find('query') == -1:
-					if it[message['message']['chat']['id']] == 0:						
+					if it[message['message']['chat']['id']] == 0:	
+
 						username = ""
 						if str(message['message']['chat']).find('username') > -1:
 								username = message['message']['chat']['username']
 						for name in admin_name:						
 							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
-								reply_admin_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
+								reply_admin_keyboard(message['message']['chat']['id'], 'Вас назаначили админом')
 								for i in range(length):
 									try:
 										if managers[i][0] == name[0]:
@@ -1264,27 +1239,25 @@ def run():
 										break
 								break
 						else:
-						#if True:
 							for j in range(length):
 								try:
 									if str(username) == str(managers[j][0]):
 										managers[j][2] = message['message']['chat']['id']
-										reply_manager_keyboard(managers[j][2], 'Добро пожаловать!')
+										reply_manager_keyboard(managers[j][2], 'Вас назначили менеджером')
 										break
 								except:
 									break
 							else:
-								reply_keyboard(message['message']['chat']['id'], 'Добро пожаловать!')
+								text = 'Добро пожаловать!'
+								if username != "":
+									if it2[username] == 1:
+										text = 'Вас удалили из списка менеджеров'
+										flag_data[message['message']['chat']['id']] = 0
+								reply_keyboard(message['message']['chat']['id'], text)
 						it[message['message']['chat']['id']] = 1
+						if username != "":
+							it2[username] = 0
 
-				
-				#try:
-				
-				#check_message(message)
-				
-				#check_query(message)
-				#except:
-				#send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 				mes1 = message
 				mes2 = message
@@ -1303,6 +1276,7 @@ def run():
 #loop.run_until_complete()
 
 run()
+
 
 
 
