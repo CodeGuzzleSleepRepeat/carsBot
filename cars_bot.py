@@ -696,7 +696,7 @@ def delete_manager(name):
 	for i in range(length):
 		try:
 			if f:
-				managers[i] = managers[i - 1]
+				managers[i - 1] = managers[i]
 			if (str(managers[i][0]) == str(name[1:])):
 				#managers = managers.drop(columns = i)
 				f = True
