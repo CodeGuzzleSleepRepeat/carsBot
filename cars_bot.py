@@ -1231,7 +1231,7 @@ def run():
 						for name in admin_name:						
 							if str(username) == name[0]:	
 								name[1] = message['message']['chat']['id']
-								reply_admin_keyboard(message['message']['chat']['id'], 'Вас назаначили админом')
+								reply_admin_keyboard(message['message']['chat']['id'], 'Вас назначили админом')
 								for i in range(length):
 									try:
 										if managers[i][0] == name[0]:
