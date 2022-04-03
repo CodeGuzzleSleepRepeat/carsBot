@@ -1440,8 +1440,8 @@ def run():
 							if str(message).find('username') > -1:
 								it2[message['message']['chat']['username']] = 0
 								it3[message['message']['chat']['username']] = 0
-					except:
-						continue
+				except:
+					continue
 
 
 				username = ''
