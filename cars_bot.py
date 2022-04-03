@@ -1412,33 +1412,36 @@ def run():
 					ban_flag = False
 					continue
 
+				try:
 
-				for ch_id in chat_ids:
-					if str(message).find('query') > -1:
-						break
-					if str(message).find('message') > -1:
-						if message['message']['chat']['id'] == ch_id:
+					for ch_id in chat_ids:
+						if str(message).find('query') > -1:
 							break
-				else:
-					if str(message).find('query') == -1:	
-						flag[message['message']['chat']['id']] = 0
-						flag_data[message['message']['chat']['id']] = 0
-						flag_car[message['message']['chat']['id']] = 0
-						flag_admin[message['message']['chat']['id']] = 0
-						flag_user[message['message']['chat']['id']] = 0
-						flag_visor[message['message']['chat']['id']] = 0
-						flag_mes[message['message']['chat']['id']] = 0
-						counter[message['message']['chat']['id']] = 0
-						num_of_photos[message['message']['chat']['id']] = 0
-						cur_manager[message['message']['chat']['id']] = [-1, -1]
-						gl_clas[message['message']['chat']['id']] = '' 
-						chat_ids.append(message['message']['chat']['id'])
-						cur_message[message['message']['chat']['id']] = ''
-						it[message['message']['chat']['id']] = 0
-						gl_flag[message['message']['chat']['id']] = 0
-						if str(message).find('username') > -1:
-							it2[message['message']['chat']['username']] = 0
-							it3[message['message']['chat']['username']] = 0
+						if str(message).find('message') > -1:
+							if message['message']['chat']['id'] == ch_id:
+								break
+					else:
+						if str(message).find('query') == -1:	
+							flag[message['message']['chat']['id']] = 0
+							flag_data[message['message']['chat']['id']] = 0
+							flag_car[message['message']['chat']['id']] = 0
+							flag_admin[message['message']['chat']['id']] = 0
+							flag_user[message['message']['chat']['id']] = 0
+							flag_visor[message['message']['chat']['id']] = 0
+							flag_mes[message['message']['chat']['id']] = 0
+							counter[message['message']['chat']['id']] = 0
+							num_of_photos[message['message']['chat']['id']] = 0
+							cur_manager[message['message']['chat']['id']] = [-1, -1]
+							gl_clas[message['message']['chat']['id']] = '' 
+							chat_ids.append(message['message']['chat']['id'])
+							cur_message[message['message']['chat']['id']] = ''
+							it[message['message']['chat']['id']] = 0
+							gl_flag[message['message']['chat']['id']] = 0
+							if str(message).find('username') > -1:
+								it2[message['message']['chat']['username']] = 0
+								it3[message['message']['chat']['username']] = 0
+					except:
+						continue
 
 
 				username = ''
@@ -1526,4 +1529,5 @@ def run():
 				
 
 run()
+
 
