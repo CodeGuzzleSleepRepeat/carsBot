@@ -156,9 +156,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -768,7 +768,6 @@ def get_mes_by_client_date(manager, date, client_id, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		print(words[1].lower(), manager.lower(), words[3], client_id, words[2][:8], date)
 		if words[1].lower() == manager.lower() and words[3] == client_id and words[2][:8] == date:
 			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 			i += 1
@@ -1071,7 +1070,6 @@ def check_message(message):
 			flag_complaint[chat_id_cur] = 0
 			return 1
 		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
-		print(complaints)
 		for name in admin_name:
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
@@ -1177,7 +1175,7 @@ def check_message(message):
 			flag_visor[chat_id_cur] = 1
 			return 1
 		if username == str(name[0]) and flag_visor[chat_id_cur] == 1:
-			print(inline_keyboard_visor(chat_id_cur, 'Выберите критерий выбора переписки'))
+			inline_keyboard_visor(chat_id_cur, 'Выберите критерий выбора переписки')
 			cur_salon[chat_id_cur] = message['message']['text']
 			flag_visor[chat_id_cur] = 2
 		if username == str(name[0]) and message['message']['text'] == 'Добавить админа':
@@ -1319,7 +1317,6 @@ def check_message(message):
 
 	num = length_data																				#Число авто за раз
 	global counter
-	print("HEllo")
 	if shpw_one_clas(message, message['message']['text'], num, 0):
 		counter[chat_id_cur] = 0
 		return 1
@@ -1443,14 +1440,11 @@ def check_query(message):
 	if message['callback_query']['data'].find('compl') > -1:
 		i = int(message['callback_query']['data'][5:])
 		compl_arr = complaints[i].split(' ')
-		print(compl_arr)
 		l = len(compl_arr)
 		manager = ''
 		for i in range(l - 3):
 			manager += compl_arr[i] + ' '
-			print(manager)
 		manager += compl_arr[l - 3]
-		print(manager, compl_arr[l - 2], compl_arr[l - 1])
 		get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
@@ -1676,3 +1670,4 @@ def run():
 				
 
 run()
+
