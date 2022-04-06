@@ -752,15 +752,18 @@ def get_mes_by_time(manager, day, chat_id):
 			continue
 		words = a.split(';;')
 		
-		print(words[2][:8], day, words[2][:8] == day)
 		if words[1].lower() == manager.lower() and words[2][:8] == day:
+			print("hey")
 			try:
+				print("hey2")
 				mes[words[2]] += str(words[2]) + ': ' + str(words[0])+ '\n'
 			except:
+				print("hey3")
 				mes[words[2]] = str(words[2]) + ': ' + str(words[0]) + '\n'
 	for m in mes:
+		print("hey4")
 		send_message(chat_id, mes[m])
-
+	print("hey5")
 	if len(mes) == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
