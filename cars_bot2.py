@@ -1109,7 +1109,7 @@ def check_message(message):
 
 	if flag_complaint[chat_id_cur] == 1:
 		if message['message']['text'].find('-') == -1 or message['message']['text'].find('-') == message['message']['text'].rfind('-'):
-			send_message(name[1], 'Неправильно введена дата')
+			send_message(chat_id_cur, 'Неправильно введена дата')
 			flag_complaint[chat_id_cur] = 0
 			return 1
 		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
@@ -1124,16 +1124,14 @@ def check_message(message):
 		for j in range(length):
 			if str(message['message']['chat']['id']) == str(managers[j][2]):
 				for i in range (len(chats)):
-					print("HERE")
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
-						print("KKK")
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
-						print("LLL")
 						print(cur_manager[chats[i][1]][0], cur_manager[chats[i][1]][1], managers[j][2])
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
+							cur_manager[chats[i][1]] = managers[j][2]
 						if str(message['message']).find('photo') > -1:
 							caption = ''
 							if str(message).find('caption') > -1:
