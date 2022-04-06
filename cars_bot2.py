@@ -1324,7 +1324,8 @@ def check_message(message):
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -2:
-				get_mes_by_client(cur_salon[chat_id_cur], message['message']['text'], name[1])
+				#get_mes_by_client(cur_salon[chat_id_cur], message['message']['text'], name[1])
+				get_mes(cur_salon[chat_id_cur], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -3:
