@@ -758,6 +758,7 @@ def get_mes_by_time(manager, day, chat_id):
 				mes[words[2]] += str(words[2]) + ': ' + str(words[0])+ '\n'
 			except:
 				mes[words[2]] = str(words[2]) + ': ' + str(words[0]) + '\n'
+	print(mes)
 	for m in mes:
 		send_message(chat_id, mes[m])
 
