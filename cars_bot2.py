@@ -1516,8 +1516,7 @@ def check_query(message):
 			if not cur_manager[chat_id_cur][0] == -1 and not cur_manager[chat_id_cur][0] == managers[man][2]:
 				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][1]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[chat_id_cur][1] + ' еще раз свяжитесь с ним')
 				flag_car[message['callback_query']['message']['chat']['id']] = 0
-				length_chats = len(chats)
-				for i in range(length_chats):    						#if manager == client - change?
+				length_chats = len(chats)    						#if manager == client - change?
 			try:
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
