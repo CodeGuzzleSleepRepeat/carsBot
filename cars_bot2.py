@@ -19,7 +19,7 @@ TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 data = []
 
 
-admin_name = [['fcknmaggot', '-1']]
+admin_name = []
 
 supervisors = pd.DataFrame()
 managers = pd.DataFrame()
@@ -34,6 +34,7 @@ flag = {}
 flag_data = {}
 flag_car = {}
 flag_admin = {}
+flag_del_admin = {}
 flag_user = {}
 flag_visor = {}
 flag_mes = {}
@@ -617,7 +618,7 @@ def reply_keyboard(chat_id, text):
 
 
 def reply_admin_keyboard(chat_id, text):
-	reply_markup = { "keyboard": [["Добавить админа"], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы']], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [["Добавить админа"], ['Удалить админа'], ['Показать админов'], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
@@ -627,7 +628,7 @@ def reply_manager_keyboard(chat_id, text):
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
 def reply_admin_manager_keyboard(chat_id, text):
-	reply_markup = { "keyboard": [["Добавить админа"], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы'], ["Удалить авто"], ['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [["Добавить админа"], ['Удалить админа'], ['Показать админов'], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы'], ["Удалить авто"], ['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
@@ -836,6 +837,43 @@ def add_svisor(str):
 	file.write('-1')
 	it3[name] = 1
 	return 'Супервизор успешно добавлен, чтобы начать работу, супервизор должен отправить любое сообщение в бота'
+
+
+def delete_admin(name):
+	if name == '@fcknmaggot' or name == '@dusha322':
+		return 'Этого админа удалить нельзя'
+	global admin_name
+	length = len(admin_name)
+	f = False
+	file = open('admins.txt', "w")
+	for i in range(length):
+		try:
+			if f:
+				admin_name[i - 1] = admin_name[i]
+			if (str(admin_name[i][0]) == str(name[1:])):
+				#managers = managers.drop(columns = i)
+				f = True
+		except:
+			break
+	if f:
+		admin_name.pop(length - 1)
+	
+	
+	length = len(admin_name)
+	for i in range(length):
+		try:
+			file.write(admin_name[i][0])
+			file.write(' ')
+			file.write(str(admin_name[i][1]))
+			file.write('\n')
+		except:
+			break
+
+	it3[name[1:]] = 1
+
+	if f:
+		return 'Админ успешно удален'
+	return 'Такого админа нет'
 
 def delete_manager(name):
 	global managers
@@ -1188,6 +1226,18 @@ def check_message(message):
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
 				i += 1
+			return 1
+		if username == str(name[0]) and message['message']['text'] == 'Удалить админа':
+			flag_del_admin[chat_id_cur] = 1
+			send_message(chat_id_cur, 'Введите ник админа')
+			return 1
+		if username == str(name[0]) and flag_del_admin[chat_id_cur] == 1:
+			send_message(chat_id_cur, delete_admin(message['message']['text']))
+			flag_del_admin[chat_id_cur] = 0
+			return 1
+		if username == str(name[0]) and message['message']['text'] == 'Показать админов':
+			for name in admin_name:
+				send_message(chat_id_cur, name[0])
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
 			send_message(name[1], "Введите ник менеджера")
@@ -1561,6 +1611,7 @@ def run():
 							flag_data[message['message']['chat']['id']] = 0
 							flag_car[message['message']['chat']['id']] = 0
 							flag_admin[message['message']['chat']['id']] = 0
+							flag_del_admin[message['message']['chat']['id']] = 0
 							flag_user[message['message']['chat']['id']] = 0
 							flag_visor[message['message']['chat']['id']] = 0
 							flag_mes[message['message']['chat']['id']] = 0
@@ -1629,6 +1680,11 @@ def run():
 							for j in range(length):
 								try:
 									if str(username) == str(managers[j][0]):
+										if it3[username] == 1:
+											text = 'Вас удалили из списка админов'
+											flag_admin[message['message']['chat']['id']] = 0
+											flag_del_admin[message['message']['chat']['id']] = 0
+											flag[message['message']['chat']['id']] = 0
 										managers[j][2] = message['message']['chat']['id']
 										reply_manager_keyboard(managers[j][2], 'Вас назначили менеджером')
 										break
@@ -1650,8 +1706,10 @@ def run():
 											text = 'Вас удалили из списка менеджеров'
 											flag_data[message['message']['chat']['id']] = 0
 										if it3[username] == 1:
-											text = 'Вас удалили из списка супервизоров'
-											flag_visor[message['message']['chat']['id']] = 0
+											text = 'Вас удалили из списка админов'
+											flag_admin[message['message']['chat']['id']] = 0
+											flag_del_admin[message['message']['chat']['id']] = 0
+											flag[message['message']['chat']['id']] = 0
 									reply_keyboard(message['message']['chat']['id'], text)
 						it[message['message']['chat']['id']] = 1
 						if username != "":
@@ -1670,4 +1728,5 @@ def run():
 				
 
 run()
+
 
