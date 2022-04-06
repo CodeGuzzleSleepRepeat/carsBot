@@ -739,7 +739,7 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		if words[4] = client_name[1:]:
+		if words[4] == client_name[1:]:
 			client_id = words[3]
 		if words[1].lower() == manager.lower() and words[3] == client_id:
 			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
