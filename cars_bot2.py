@@ -19,7 +19,7 @@ TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 data = []
 
 
-admin_name = []
+admin_name = [['fcknmaggot', -1]]
 
 supervisors = pd.DataFrame()
 managers = pd.DataFrame()
