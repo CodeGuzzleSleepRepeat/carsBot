@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -605,7 +605,7 @@ def editMessageCaption(mes_id, chat_id, text, cur, photo_num, salon):
 
 
 def editReplyMarkup(chat_id, clas, text):
-	reply_markup = { "keyboard": [['Все авто'], ["Эконом (до 1 млн)"], ["Комфорт (от 1 до 3 млн)"], ["Премиум (от 3 до 10 млн)"], ["Элит (больше 10 млн)"], ["Выставить свою машину"]], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [['Все авто'], ["Эконом (до 1 млн)"], ["Комфорт (от 1 до 3 млн)"], ["Премиум (от 3 до 10 млн)"], ["Элит (больше 10 млн)"], ["Выставить свою машину"], ['Оставить жалобу на менеджера']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text': text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
@@ -753,11 +753,11 @@ def get_mes_by_time(manager, day, chat_id):
 		words = a.split(';;')
 		if words[1].lower() == manager.lower() and words[2][:8] == day:
 			try:
-				mes[words[2]] += str(words[2]) + ': ' + str(words[0] + '\n')
+				mes[words[2]] += str(words[2]) + ': ' + str(words[0])+ '\n'
 			except:
-				mes[words[2]] = str(words[2]) + ': ' + str(words[0] + '\n')
+				mes[words[2]] = str(words[2]) + ': ' + str(words[0]) + '\n'
 	for m in mes:
-		send_message(chat_id, m)
+		send_message(chat_id, mes[m])
 
 	if len(mes) == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
@@ -1122,6 +1122,7 @@ def check_message(message):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
+						print(cur_manager[chats[i][1]][0], managers[j][2])
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
@@ -1134,7 +1135,7 @@ def check_message(message):
 							if str(message).find('username') > -1:
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
-
+							break
 						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
@@ -1548,7 +1549,7 @@ def run():
 	it = {}
 
 	parse_data("2019-01-01")
-	
+
 	get_admins()
 	print("Admins: ", admin_name)
 	get_managers()
@@ -1728,5 +1729,6 @@ def run():
 				
 
 run()
+
 
 
