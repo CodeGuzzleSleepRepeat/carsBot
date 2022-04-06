@@ -702,7 +702,6 @@ def f_read():
 	file = open('messages.txt', "r")
 	res = file.read()
 	arr = res.split('\n')
-	print(arr)
 	file.close()	
 	return arr
 
@@ -752,13 +751,11 @@ def get_mes_by_time(manager, day, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		print(manager, words[1], day, words[2][:8])
 		if words[1].lower() == manager.lower() and words[2][:8] == day:
 			try:
 				mes[words[2]] += str(words[2]) + ': ' + str(words[0])+ '\n'
 			except:
 				mes[words[2]] = str(words[2]) + ': ' + str(words[0]) + '\n'
-	print(mes)
 	for m in mes:
 		send_message(chat_id, mes[m])
 
@@ -957,6 +954,7 @@ def shpw_one_clas(message, clas, num, count):
 	global last_clas
 	global gl_flag
 	
+
 	price1 = 0
 	price2 = 0
 	j = 0
@@ -1125,7 +1123,6 @@ def check_message(message):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
-						print(cur_manager[chats[i][1]][0], managers[j][2])
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
@@ -1524,7 +1521,6 @@ def check_query(message):
 				if str(message['callback_query']['message']['chat']).find('username') > -1:
 					user = message['callback_query']['message']['chat']['username'] + ' '
 				first_name = user + message['callback_query']['message']['chat']['first_name']
-				#last_name = message['callback_query']['message']['chat']['last_name']
 				chat_id = message['callback_query']['message']['chat']['id']
 				chats.append([send_message(cur_manager[chat_id_cur][0], 'Сообщение от ' + first_name + ' ' + str(chat_id) + ' по поводу машины ' + mes)['result']['message_id'], chat_id])
 				username = ' '
@@ -1536,7 +1532,6 @@ def check_query(message):
 				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
 			send_message(message['callback_query']['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
-			#cur_manager[chat_id_cur][0] = -1
 		return
 
 
@@ -1544,7 +1539,6 @@ def check_query(message):
 
 def run():
 	global banned
-
 	date = datetime.date.today()
 	tt = datetime.datetime.now()
 	fl = True
@@ -1585,7 +1579,6 @@ def run():
 			if update_id != message['update_id']:
 				if update_id < message['update_id']:
 					update_id = message['update_id']
-
 									
 				for ban in banned:
 					if str(message).find('query') == -1:
@@ -1732,6 +1725,7 @@ def run():
 				
 
 run()
+
 
 
 
