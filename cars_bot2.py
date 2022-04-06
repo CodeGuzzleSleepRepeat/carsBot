@@ -702,6 +702,7 @@ def f_read():
 	file = open('messages.txt', "r")
 	res = file.read()
 	arr = res.split('\n')
+	print(arr)
 	file.close()	
 	return arr
 
