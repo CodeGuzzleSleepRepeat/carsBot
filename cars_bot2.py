@@ -747,11 +747,16 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 def get_mes_by_time(manager, day, chat_id):
 	arr = f_read()
 	mes = {}
+	i = 0
+	print(len(arr))
 	for a in arr:
 		if a == '':
 			continue
 		words = a.split(';;')
-		
+		print(i)
+		print(a)
+		print(words)
+		i += 1
 		if words[1].lower() == manager.lower() and words[2][:8] == day:
 			print("hey")
 			try:
