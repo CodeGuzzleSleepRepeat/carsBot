@@ -757,6 +757,7 @@ def get_mes_by_time(manager, day, chat_id):
 		print(a)
 		print(words)
 		i += 1
+		print(words[1].lower() == manager.lower(), words[1].lower(), manager.lower(), words[2][:8] == day, day, words[2][:8])
 		if words[1].lower() == manager.lower() and words[2][:8] == day:
 			print("hey")
 			try:
