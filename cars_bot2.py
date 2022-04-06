@@ -1137,7 +1137,7 @@ def check_message(message):
 								caption = message['message']['caption']
 							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
-							if str(message[]).find('username') > -1:
+							if str(message).find('username') > -1:
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
 							break
