@@ -1157,6 +1157,7 @@ def check_message(message):
 		return 1
 
 	if str(message['message']['text']).find('Вернуться к диалогу') > - 1:
+		res = -1
 		man = message['message']['text'][len('Вернуться к диалогу с '):]
 		try:
 			for i in range(len(managers.columns)):
@@ -1410,7 +1411,7 @@ def check_message(message):
 
 	
 
-	elif len(cur_manager[chat_id_cur]) > 0:
+	try:
 		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 0:
 			chats.append([send_message(cur_manager[chat_id_cur][0], 'От пользователя id ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 			username = ' '
@@ -1419,6 +1420,8 @@ def check_message(message):
 			f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'], cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
 			editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
 			return 1
+	except:
+		return 1
 	
 	if flag_car[chat_id_cur] == 2:
 		cur_message[message['message']['chat']['id']] += 'Марка: ' + message['message']['text'] + '\n'
