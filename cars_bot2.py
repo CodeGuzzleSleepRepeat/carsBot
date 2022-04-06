@@ -1129,7 +1129,7 @@ def check_message(message):
 							time.sleep(1)
 						print(cur_manager[chats[i][1]][0], cur_manager[chats[i][1]][1], managers[j][2])
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
-							print(reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1]).status)
+							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
 						if str(message['message']).find('photo') > -1:
 							caption = ''
