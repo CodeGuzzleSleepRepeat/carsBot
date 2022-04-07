@@ -1148,6 +1148,8 @@ def check_message(message):
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
 							break
 						if True:
+							if chats[i][1] == -1:
+								print("Fuck")
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
@@ -1520,8 +1522,12 @@ def check_query(message):
 		manager = ''
 		for i in range(l - 3):
 			manager += compl_arr[i] + ' '
-		manager += compl_arr[l - 3]
-		get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
+
+		try:
+			manager += compl_arr[l - 3]
+			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
+		except:
+			return 1
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
 
