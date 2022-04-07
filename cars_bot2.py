@@ -694,21 +694,12 @@ def inline_keyboard_compl(chat_id, text, i):
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
 
-def swap(date):
-	t1 = date[0]
-	t2 = date[1]
-	date[0] = date[3]
-	date[1] = date[4]
-	date[3] = t1
-	date[4] = t2
-	return date
+
 
 
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
-	date = time.strftime('%m-%d-%y %H:%M:%S')
-	date = swap(date)
-	file.write(text + ';;' + manager + ';;' + date + ';;' + str(client_id) + ';;' + client_name + '\n')	
+	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
 def f_read():
