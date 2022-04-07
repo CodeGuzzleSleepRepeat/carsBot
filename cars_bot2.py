@@ -1757,9 +1757,9 @@ def run():
 				mes2 = message
 				try:
 					if str(message).find('query') == -1:
-						print(cur_manager[message['message']['chat']['id']])
+						print(cur_manager[message['message']['chat']['id']][1])
 					else:
-						print(cur_manager[message['callback_query']['message']['chat']['id']])
+						print(cur_manager[message['callback_query']['message']['chat']['id']][1])
 				except:
 					print('HEHEHE')
 					if str(message).find('query') == -1:
