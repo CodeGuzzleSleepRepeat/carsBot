@@ -157,16 +157,16 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
 		print("Downloading photos: " + str(i) + " done")
 		i += 1
 		data.append(ddd)
-	
+	print("Parsing completed")
 
 
 def get_managers():
@@ -1605,7 +1605,7 @@ def run():
 			if update_id != message['update_id']:
 				if update_id < message['update_id']:
 					update_id = message['update_id']
-									
+				print("Here")		
 				for ban in banned:
 					if str(message).find('query') == -1:
 						if str(ban) == str(message['message']['chat']['id']):
