@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1103,6 +1103,7 @@ def check_message(message):
 		
 
 	if message['message']['text'] == 'Оставить жалобу на менеджера':
+		flag_car[chat_id_cur] = 0
 		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате mm-dd-yy')
 		flag_complaint[chat_id_cur] = 1
 		return 1
@@ -1113,6 +1114,7 @@ def check_message(message):
 			flag_complaint[chat_id_cur] = 0
 			return 1
 		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
+		send_message(chat_id_cur, 'Жалоба отправлена и будет вскоре рассмотрена. Спасибо, что помогаете улучшать сервис')
 		for name in admin_name:
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
@@ -1157,6 +1159,7 @@ def check_message(message):
 		return 1
 
 	if str(message['message']['text']).find('Вернуться к диалогу') > - 1:
+		flag_complaint[chat_id_cur] = 0
 		res = -1
 		man = message['message']['text'][len('Вернуться к диалогу с '):]
 		try:
@@ -1172,6 +1175,7 @@ def check_message(message):
 
 	
 	if message['message']['text'] == 'Выставить свою машину':
+		flag_complaint[chat_id_cur] = 0
 		leng = len(managers.columns)
 		for i in range(leng):
 			try:
@@ -1506,6 +1510,7 @@ def check_query(message):
 		for i in range(l - 3):
 			manager += compl_arr[i] + ' '
 		manager += compl_arr[l - 3]
+		print(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
@@ -1519,6 +1524,7 @@ def check_query(message):
 				flag_car[message['callback_query']['message']['chat']['id']] = 0
 				length_chats = len(chats)    						#if manager == client - change?
 			try:
+				flag_complaint[chat_id_cur] = 0
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
 				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
