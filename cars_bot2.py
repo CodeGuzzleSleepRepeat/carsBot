@@ -1129,7 +1129,6 @@ def check_message(message):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
-						print(cur_manager[chats[i][1]][0], cur_manager[chats[i][1]][1], managers[j][2])
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
@@ -1510,7 +1509,6 @@ def check_query(message):
 		for i in range(l - 3):
 			manager += compl_arr[i] + ' '
 		manager += compl_arr[l - 3]
-		print(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
