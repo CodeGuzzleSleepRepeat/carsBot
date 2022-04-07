@@ -10,9 +10,9 @@ from threading import Thread
 
 
 
-#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
@@ -1579,6 +1579,7 @@ def run():
 	get_svisors()
 	print("Supervisors: ", supervisors)
 	fl = True
+	print(chat_ids)
 	while fl:
 		try:
 			update_id = get_updates()[-1]['update_id']
@@ -1740,6 +1741,11 @@ def run():
 				
 				mes1 = message
 				mes2 = message
+				try:
+					print(cur_manager[chat_id_cur])
+				except:
+					cur_manager[chat_id_cur] = [-1, -1]
+
 				if True:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
