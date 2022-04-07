@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1143,13 +1143,13 @@ def check_message(message):
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
 							break
-						try:
+						if True:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': ' + message['message']['text'], managers[j][1], chats[i][1], username, datetime.datetime.now())
-						except:
+						else:
 							break
 				return 1
 
@@ -1161,11 +1161,11 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		res = -1
 		man = message['message']['text'][len('Вернуться к диалогу с '):]
-		try:
+		if True:
 			for i in range(len(managers.columns)):
 				if man == managers[i][1]:
 					res = managers[i][2]
-		except:
+		else:
 			send_message(message['message']['chat']['id'], 'Не удалось вернуться к диалогу, возможно менеджер был удален')
 			return 1
 		cur_manager[message['message']['chat']['id']][0] = res
@@ -1177,13 +1177,13 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		leng = len(managers.columns)
 		for i in range(leng):
-			try:
+			if True:
 				if managers[i][1].lower() == 'Менеджер'.lower() and int(managers[i][2]) > -1:
 					cur_manager[chat_id_cur][0] = managers[i][2]
 					cur_manager[chat_id_cur][1] = managers[i][1]
 					send_message(message['message']['chat']['id'], '1. Введите ваш город')
 					break
-			except:
+			else:
 				break
 		else:
 			cur_manager[chat_id_cur][0] = -1
@@ -1528,7 +1528,7 @@ def check_query(message):
 				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][1]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[chat_id_cur][1] + ' еще раз свяжитесь с ним')
 				flag_car[message['callback_query']['message']['chat']['id']] = 0
 				length_chats = len(chats)    						#if manager == client - change?
-			try:
+			if True:
 				flag_complaint[chat_id_cur] = 0
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
@@ -1545,7 +1545,7 @@ def check_query(message):
 					username = message['callback_query']['message']['chat']['username']
 				f_write('Сообщение от пользователя ' + str(chat_id) + ' по поводу машины ' + mes, cur_manager[chat_id_cur][1], chat_id, username, datetime.datetime.now())
 				send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
-			except:
+			else:
 				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
 			send_message(message['callback_query']['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
@@ -1611,7 +1611,7 @@ def run():
 					ban_flag = False
 					continue
 
-				try:
+				if True:
 
 					for ch_id in chat_ids:
 						if str(message).find('query') > -1:
@@ -1642,7 +1642,7 @@ def run():
 							if str(message).find('username') > -1:
 								it2[message['message']['chat']['username']] = 0
 								it3[message['message']['chat']['username']] = 0
-				except:
+				else:
 					continue
 
 
@@ -1732,12 +1732,12 @@ def run():
 				
 				mes1 = message
 				mes2 = message
-				try:
+				if True:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
 					thread2.start()
-				except:
+				else:
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
