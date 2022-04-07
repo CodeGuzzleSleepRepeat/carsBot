@@ -1118,6 +1118,7 @@ def check_message(message):
 		for name in admin_name:
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
+		flag_complaint[chat_id_cur] = 0
 		return 1
 
 	
@@ -1233,12 +1234,14 @@ def check_message(message):
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Просмотреть жалобы':
 			i = 0
-			if len(complaints) == 0:
-				send_message(chat_id_cur, 'Жалоб нет')
 			for compl in complaints:
+				if (compl == ''):
+					continue
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
 				i += 1
+			if i == 0:
+				send_message(chat_id_cur, 'Жалоб нет')
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Удалить админа':
 			flag_del_admin[chat_id_cur] = 1
@@ -1505,7 +1508,11 @@ def check_query(message):
 
 	if message['callback_query']['data'].find('compl') > -1:
 		i = int(message['callback_query']['data'][5:])
-		compl_arr = complaints[i].split(' ')
+		try:
+			compl_arr = complaints[i].split(' ')
+		except:
+			send_message(message['callback_query']['message']['chat']['id'], 'Жалоба была удалена')
+			return 1
 		l = len(compl_arr)
 		manager = ''
 		for i in range(l - 3):
@@ -1517,7 +1524,7 @@ def check_query(message):
 
 	if message['callback_query']['data'].find('comp_del') > -1:
 		i = int(message['callback_query']['data'][8:])
-		complaints.pop(i)
+		complaints[i] = ''
 		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
 		return 1
 
@@ -1532,7 +1539,8 @@ def check_query(message):
 				flag_complaint[chat_id_cur] = 0
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
-				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')] 
+				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
+				print("CAR_ID", car_id)
 				mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
 				user = ''
 				if str(message['callback_query']['message']['chat']).find('username') > -1:
