@@ -623,12 +623,12 @@ def reply_admin_keyboard(chat_id, text):
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
 def reply_manager_keyboard(chat_id, text):
-	reply_markup = { "keyboard": [["Удалить авто"], ['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
 def reply_admin_manager_keyboard(chat_id, text):
-	reply_markup = { "keyboard": [["Добавить админа"], ['Удалить админа'], ['Показать админов'], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы'], ["Удалить авто"], ['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
+	reply_markup = { "keyboard": [["Добавить админа"], ['Удалить админа'], ['Показать админов'], ["Назначить менеджера"], ["Удалить менеджера"], ['Показать менеджеров'], ['Показать переписки'], ['Просмотреть жалобы'], ['Забанить пользователя'], ['Разбанить пользователя']], "resize_keyboard": True, "one_time_keyboard": False}
 	data = {'chat_id': chat_id, 'text' : text, 'reply_markup': json.dumps(reply_markup)}
 	requests.post(f'{URL}{TOKEN}/sendMessage', data=data)
 
