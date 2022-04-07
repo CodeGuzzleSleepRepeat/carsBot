@@ -1579,13 +1579,14 @@ def run():
 	get_svisors()
 	print("Supervisors: ", supervisors)
 	fl = True
-	print(chat_ids)
+	
 	while fl:
 		try:
 			update_id = get_updates()[-1]['update_id']
 			fl = False
 		except:
 			time.sleep(1)
+	print("Hey")
 	while True:
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
@@ -1597,10 +1598,12 @@ def run():
 				tt = cur_time
 			except:
 				print("Unable to get today`s updates")
+		print("Hey2")
 		try:
 			messages = get_updates(update_id)
 		except:
 			time.sleep(1)
+		print("Hey3")
 		for message in messages:
 			if update_id != message['update_id']:
 				if update_id < message['update_id']:
