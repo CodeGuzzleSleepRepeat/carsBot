@@ -1121,14 +1121,12 @@ def check_message(message):
 		return 1
 		
 	if str(message).find('file') > -1:
-		print("IIII")
 		caption = ''
 		if str(message).find('caption') > -1:
 			caption = message['message']['caption']
-		print(cur_manager[chat_id_cur][0])
 		if cur_manager[chat_id_cur][0] != -1:
 			print("LOOOK")
-			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + message['message']['chat']['id'][5:] + ': ' + caption)
+			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
 			send_message(chat_id_cur, 'Фото доставлено')
 		return 1
 
