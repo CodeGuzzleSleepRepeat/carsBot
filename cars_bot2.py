@@ -1,4 +1,4 @@
-import requests
+import requestsimport requests
 import time
 import urllib3
 import pandas as pd
@@ -699,6 +699,7 @@ def inline_keyboard_compl(chat_id, text, i):
 
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
+	text.replace('\n', '')
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -1154,6 +1155,7 @@ def check_message(message):
 			if str(message['message']['chat']['id']) == str(managers[j][2]):
 				for i in range (len(chats)):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
+						print(message)
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
