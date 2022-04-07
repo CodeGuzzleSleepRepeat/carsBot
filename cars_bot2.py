@@ -699,7 +699,9 @@ def inline_keyboard_compl(chat_id, text, i):
 
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
+	print(text)
 	text.replace('\n', '')
+	print(text)
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -1148,14 +1150,13 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		return 1
 
-	
+	print(message)
 	if str(message).find('reply_to_message') > -1:
 		length = len(managers.columns)
 		for j in range(length):
 			if str(message['message']['chat']['id']) == str(managers[j][2]):
 				for i in range (len(chats)):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
-						print(message)
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
