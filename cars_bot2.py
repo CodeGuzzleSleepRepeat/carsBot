@@ -725,9 +725,12 @@ def get_mes_by_client(manager, client, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		if words[1].lower() == manager.lower() and words[3] == client:
-			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
-			i += 1
+		try:
+			if words[1].lower() == manager.lower() and words[3] == client:
+				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
+				i += 1
+		except:
+			continue
 	if i == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
@@ -741,9 +744,12 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 		words = a.split(';;')
 		if words[4] == client_name[1:]:
 			client_id = words[3]
-		if words[1].lower() == manager.lower() and words[3] == client_id:
-			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
-			i += 1
+		try:
+			if words[1].lower() == manager.lower() and words[3] == client_id:
+				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
+				i += 1
+		except:
+			continue
 	if i == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
@@ -756,11 +762,14 @@ def get_mes_by_time(manager, day, chat_id):
 			continue
 		words = a.split(';;')
 		i += 1
-		if words[1].lower() == manager.lower() and words[2][:8] == day:
-			try:
-				mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
-			except:
-				mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
+		try:
+			if words[1].lower() == manager.lower() and words[2][:8] == day:
+				try:
+					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
+				except:
+					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
+		except:
+			continue
 	for m in mes:
 		send_message(chat_id, mes[m])
 	if len(mes) == 0:
@@ -774,9 +783,12 @@ def get_mes_by_client_date(manager, date, client_id, chat_id):
 			continue
 		print(a)
 		words = a.split(';;')
-		if words[1].lower() == manager.lower() and words[3] == client_id and words[2][:8] == date:
-			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
-			i += 1
+		try:
+			if words[1].lower() == manager.lower() and words[3] == client_id and words[2][:8] == date:
+				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
+				i += 1
+		except:
+			continue
 	if i == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
@@ -1088,9 +1100,10 @@ def check_message(message):
 	global flag_user
 	global gl_flag
 	global banned
+	global cur_manager
 
 	chat_id_cur = message['message']['chat']['id']
-
+	print(flag_car[chat_id_cur])
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
 		rrr = send_file(message).json()
 		if rrr == -1:
