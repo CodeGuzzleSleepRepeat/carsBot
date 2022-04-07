@@ -772,6 +772,7 @@ def get_mes_by_client_date(manager, date, client_id, chat_id):
 	for a in arr:
 		if a == '':
 			continue
+		print(a)
 		words = a.split(';;')
 		if words[1].lower() == manager.lower() and words[3] == client_id and words[2][:8] == date:
 			send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
@@ -1536,7 +1537,7 @@ def check_query(message):
 
 		try:
 			print("HERE")
-			print(l - 3, compl_arr[0])
+			print(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 			manager += compl_arr[l - 3]
 			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		except:
