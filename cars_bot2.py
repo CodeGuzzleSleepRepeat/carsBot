@@ -700,7 +700,7 @@ def inline_keyboard_compl(chat_id, text, i):
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	print(text)
-	text = text.replace('\n', '')
+	text = text.replace('\n', ' ')
 	print(text)
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
@@ -1192,7 +1192,7 @@ def check_message(message):
 
 	if message['message']['text'] == 'Оставить жалобу на менеджера':
 		flag_car[chat_id_cur] = 0
-		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате dd-mm-yy')
+		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате dd-mm-yy (Пример: Мкад 51-й километр 08-04-22, где 08 - дата, 04 - апрель, 22 - год )')
 		flag_complaint[chat_id_cur] = 1
 		return 1
 
