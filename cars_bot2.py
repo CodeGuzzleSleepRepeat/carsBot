@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -699,9 +699,7 @@ def inline_keyboard_compl(chat_id, text, i):
 
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
-	print(text)
 	text = text.replace('\n', ' ')
-	print(text)
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -788,7 +786,6 @@ def get_mes_by_client_date(manager, date, client_id, chat_id):
 	for a in arr:
 		if a == '':
 			continue
-		print(a)
 		words = a.split(';;')
 		try:
 			if words[1].lower() == manager.lower() and words[3] == client_id and words[2][:8] == date:
@@ -1142,7 +1139,6 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		return 1
 
-	print(message)
 	if str(message).find('reply_to_message') > -1:
 		length = len(managers.columns)
 		for j in range(length):
@@ -1156,25 +1152,22 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]] = managers[j][2]
 						if str(message).find('photo') > -1:
-							print("Here")
 							caption = ''
 							if str(message['message']).find('caption') > -1:
 								caption = message['message']['caption']
-							print(caption)
-							print(chats[i][1], message['message']['photo'][0]['file_id'])
 							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
 							break
-						if True:
+						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
 								username = message['message']['chat']['username']
 							f_write(managers[j][1] + ': ' + message['message']['text'], managers[j][1], chats[i][1], username, datetime.datetime.now())
-						else:
+						except:
 							break
 				return 1
 
@@ -1200,11 +1193,11 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		res = -1
 		man = message['message']['text'][len('Вернуться к диалогу с '):]
-		if True:
+		try:
 			for i in range(len(managers.columns)):
 				if man == managers[i][1]:
 					res = managers[i][2]
-		else:
+		except:
 			send_message(message['message']['chat']['id'], 'Не удалось вернуться к диалогу, возможно менеджер был удален')
 			return 1
 		cur_manager[message['message']['chat']['id']][0] = res
@@ -1216,13 +1209,13 @@ def check_message(message):
 		flag_complaint[chat_id_cur] = 0
 		leng = len(managers.columns)
 		for i in range(leng):
-			if True:
+			try:
 				if managers[i][1].lower() == 'Менеджер'.lower() and int(managers[i][2]) > -1:
 					cur_manager[chat_id_cur][0] = managers[i][2]
 					cur_manager[chat_id_cur][1] = managers[i][1]
 					send_message(message['message']['chat']['id'], '1. Введите ваш город')
 					break
-			else:
+			except:
 				break
 		else:
 			cur_manager[chat_id_cur][0] = -1
@@ -1559,8 +1552,6 @@ def check_query(message):
 			manager += compl_arr[i] + ' '
 
 		try:
-			print("HERE")
-			print(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 			manager += compl_arr[l - 3]
 			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		except:
@@ -1583,7 +1574,7 @@ def check_query(message):
 				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][1]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[chat_id_cur][1] + ' еще раз свяжитесь с ним')
 				flag_car[message['callback_query']['message']['chat']['id']] = 0
 				length_chats = len(chats)    						#if manager == client - change?
-			if True:
+			try:
 				flag_complaint[chat_id_cur] = 0
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
@@ -1600,7 +1591,7 @@ def check_query(message):
 					username = message['callback_query']['message']['chat']['username']
 				f_write('Сообщение от пользователя ' + str(chat_id) + ' по поводу машины ' + mes, cur_manager[chat_id_cur][1], chat_id, username, datetime.datetime.now())
 				send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
-			else:
+			except:
 				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
 			send_message(message['callback_query']['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
@@ -1668,7 +1659,7 @@ def run():
 					ban_flag = False
 					continue
 
-				if True:
+				try:
 
 					for ch_id in chat_ids:
 						if str(message).find('query') > -1:
@@ -1699,7 +1690,7 @@ def run():
 							if str(message).find('username') > -1:
 								it2[message['message']['chat']['username']] = 0
 								it3[message['message']['chat']['username']] = 0
-				else:
+				except:
 					continue
 
 
@@ -1795,21 +1786,20 @@ def run():
 					else:
 						print(cur_manager[message['callback_query']['message']['chat']['id']][1])
 				except:
-					print('HEHEHE')
 					if str(message).find('query') == -1:
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
 						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
-				if True:
+				try:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
 					thread2.start()
-				else:
+				except:
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()	
+run()		
 
 
 
