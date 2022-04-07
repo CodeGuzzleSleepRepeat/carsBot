@@ -1005,7 +1005,6 @@ def shpw_one_clas(message, clas, num, count):
 	return True
 
 def send_file(message):
-	global num_of_photos
 	man = ""
 	length = len(managers.columns)
 	for i in range(length):
@@ -1021,7 +1020,7 @@ def send_file(message):
 
 	if str(message).find('caption') > -1:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
-	chats.append([send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')['result']['message_id'], message['message']['chat']['id']])
+	send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 	username = ' '
 	if str(message).find('username') > -1:
 		username = message['message']['chat']['username']
@@ -1103,6 +1102,7 @@ def check_message(message):
 	if flag_car[chat_id_cur] == 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
+		return 1
 		
 
 	if message['message']['text'] == 'Оставить жалобу на менеджера':
