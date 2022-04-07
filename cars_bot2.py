@@ -1746,12 +1746,12 @@ def run():
 				mes1 = message
 				mes2 = message
 				try:
-					if str(message).find(query) == -1:
+					if str(message).find('query') == -1:
 						print(cur_manager[message['message']['chat']['id']])
 					else:
 						print(cur_manager[message['callback_query']['message']['chat']['id']])
 				except:
-					if str(message).find(query) == -1:
+					if str(message).find('query') == -1:
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
 						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
