@@ -1021,7 +1021,7 @@ def send_file(message):
 
 	if str(message).find('caption') > -1:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
-	send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+	chats.append([send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')['result']['message_id'], message['message']['chat']['id']])
 	username = ' '
 	if str(message).find('username') > -1:
 		username = message['message']['chat']['username']
@@ -1043,7 +1043,7 @@ def send_car_data(message):
 
 	username = str(message['message']['chat']['first_name'])
 	try:
-		send_message(man_id, 'Сообщение от пользователя ' + username + ' id ' + str(message['message']['chat']['id'])[5:] + ':\n' + str(cur_message[message['message']['chat']['id']]))
+		chats.append([send_message(man_id, 'Сообщение от пользователя ' + username + ' id ' + str(message['message']['chat']['id'])[5:] + ':\n' + str(cur_message[message['message']['chat']['id']]))['result']['message_id'], message['message']['chat']['id']])
 		username = ' '
 		if str(message).find('username') > -1:
 			username = message['message']['chat']['username']
@@ -1148,8 +1148,6 @@ def check_message(message):
 							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
 							break
 						if True:
-							if chats[i][1] == -1:
-								print("Fuck")
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
