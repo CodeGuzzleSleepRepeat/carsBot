@@ -985,14 +985,16 @@ def shpw_one_clas(message, clas, num, count):
 	length = len(data)
 	gl_flag[message['message']['chat']['id']] = 1
 	for i in range(length):
-		print(data[i][17])
-		if int(data[i][17][6:]) < price1 and int(data[i][17][6:]) >= price2:
-			if j >= count:
-				inline_keyboard(message['message']['chat']['id'], data[i])
-				cc += 1
-			j += 1 
-			if (j == num + count):
-				break
+		try:
+			if int(data[i][17][6:]) < price1 and int(data[i][17][6:]) >= price2:
+				if j >= count:
+					inline_keyboard(message['message']['chat']['id'], data[i])
+					cc += 1
+				j += 1 
+				if (j == num + count):
+					break
+		except:
+			continue
 
 	if count + 1 <= cc + count:
 		editReplyMarkup(message['message']['chat']['id'], clas, 'Авто ' + str(count + 1) + '-' + str(cc + count)) 
@@ -1580,14 +1582,13 @@ def run():
 	get_svisors()
 	print("Supervisors: ", supervisors)
 	fl = True
-	
+
 	while fl:
 		try:
 			update_id = get_updates()[-1]['update_id']
 			fl = False
 		except:
 			time.sleep(1)
-	
 	while True:
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
@@ -1599,17 +1600,16 @@ def run():
 				tt = cur_time
 			except:
 				print("Unable to get today`s updates")
-		
 		try:
 			messages = get_updates(update_id)
 		except:
 			time.sleep(1)
-		
+
 		for message in messages:
 			if update_id != message['update_id']:
 				if update_id < message['update_id']:
 					update_id = message['update_id']
-					
+									
 				for ban in banned:
 					if str(message).find('query') == -1:
 						if str(ban) == str(message['message']['chat']['id']):
@@ -1746,10 +1746,15 @@ def run():
 				mes1 = message
 				mes2 = message
 				try:
-					print(cur_manager[message['message']['chat']['id']])
+					if str(message).find(query) == -1:
+						print(cur_manager[message['message']['chat']['id']])
+					else:
+						print(cur_manager[message['callback_query']['message']['chat']['id']])
 				except:
-					cur_manager[message['message']['chat']['id']] = [-1, -1]
-
+					if str(message).find(query) == -1:
+						cur_manager[message['message']['chat']['id']] = [-1, -1]
+					else:
+						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
 				if True:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
