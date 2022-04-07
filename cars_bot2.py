@@ -695,7 +695,7 @@ def inline_keyboard_compl(chat_id, text, i):
 
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
-	file.write(text + ';;' + manager + ';;' + time.strftime('%m-%d-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
+	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
 def f_read():
@@ -1103,7 +1103,7 @@ def check_message(message):
 	global cur_manager
 
 	chat_id_cur = message['message']['chat']['id']
-	print(flag_car[chat_id_cur])
+	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
 		rrr = send_file(message).json()
 		if rrr == -1:
@@ -1115,7 +1115,6 @@ def check_message(message):
 	
 
 	if flag_car[chat_id_cur] == 7:
-		print(message['message']['text'])
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
 		send_message(chat_id_cur, 'Данные отправлены менеджеру')
@@ -1158,9 +1157,12 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]] = managers[j][2]
 						if str(message).find('photo') > -1:
+							print("Here")
 							caption = ''
 							if str(message['message']).find('caption') > -1:
 								caption = message['message']['caption']
+							print(caption)
+							print(chats[i][1], message['message']['photo'][0]['file_id'])
 							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
 							if str(message).find('username') > -1:
@@ -1183,7 +1185,7 @@ def check_message(message):
 
 	if message['message']['text'] == 'Оставить жалобу на менеджера':
 		flag_car[chat_id_cur] = 0
-		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате mm-dd-yy')
+		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате dd-mm-yy')
 		flag_complaint[chat_id_cur] = 1
 		return 1
 
