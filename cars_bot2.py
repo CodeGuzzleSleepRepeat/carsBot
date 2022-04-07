@@ -218,7 +218,7 @@ def get_updates(offset=0):
     return result['result']
 
 def editMessage(mes_id, chat_id, text):
-	requests.get(f'{URL}{TOKEN}/editMessage?chat_id={chat_id}&message_id={mes_id}&text={text}')
+	return requests.get(f'{URL}{TOKEN}/editMessageText?chat_id={chat_id}&message_id={mes_id}&text={text}')
 
 
 
@@ -689,7 +689,7 @@ def inline_keyboard_visor(chat_id, text):
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
 def inline_keyboard_compl(chat_id, text, i):
-	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}]]}
+	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}, {'text' : 'Удалить', 'callback_data' : 'comp_del' + str(i)}]]}
 	data = {'chat_id': chat_id, 'text': 'Жалоба ' + str(i), 'reply_markup': json.dumps(reply_markup)}
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
@@ -1233,6 +1233,8 @@ def check_message(message):
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Просмотреть жалобы':
 			i = 0
+			if len(complaints) == 0:
+				send_message(chat_id_cur, 'Жалоб нет')
 			for compl in complaints:
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
@@ -1513,6 +1515,11 @@ def check_query(message):
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
 
+	if message['callback_query']['data'].find('comp_del') > -1:
+		i = int(message['callback_query']['data'][8:])
+		complaints.pop(i)
+		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
+		return 1
 
 	if message['callback_query']['data'].find('manager') > -1:
 		man = find_manager(message)
