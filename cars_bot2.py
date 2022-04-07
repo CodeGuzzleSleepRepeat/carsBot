@@ -1114,7 +1114,7 @@ def check_message(message):
 		print(cur_manager[chat_id_cur][0])
 		if cur_manager[chat_id_cur][0] != -1:
 			print("LOOOK")
-			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['char']['first_name'] + message['message']['chat']['id'][5:] + ': ' + caption)
+			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + message['message']['chat']['id'][5:] + ': ' + caption)
 			send_message(chat_id_cur, 'Фото доставлено')
 		return 1
 
