@@ -985,6 +985,7 @@ def shpw_one_clas(message, clas, num, count):
 	length = len(data)
 	gl_flag[message['message']['chat']['id']] = 1
 	for i in range(length):
+		print(data[i][17])
 		if int(data[i][17][6:]) < price1 and int(data[i][17][6:]) >= price2:
 			if j >= count:
 				inline_keyboard(message['message']['chat']['id'], data[i])
