@@ -1105,11 +1105,6 @@ def check_message(message):
 		return 1
 		
 
-	if message['message']['text'] == 'Оставить жалобу на менеджера':
-		flag_car[chat_id_cur] = 0
-		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате mm-dd-yy')
-		flag_complaint[chat_id_cur] = 1
-		return 1
 
 	if flag_complaint[chat_id_cur] == 1:
 		if message['message']['text'].find('-') == -1 or message['message']['text'].find('-') == message['message']['text'].rfind('-'):
@@ -1159,6 +1154,12 @@ def check_message(message):
 
 
 	if str(message).find('file') > -1:
+		return 1
+
+	if message['message']['text'] == 'Оставить жалобу на менеджера':
+		flag_car[chat_id_cur] = 0
+		send_message(message['message']['chat']['id'], 'Введите нзвание салона и дату диалога в формате mm-dd-yy')
+		flag_complaint[chat_id_cur] = 1
 		return 1
 
 	if str(message['message']['text']).find('Вернуться к диалогу') > - 1:
@@ -1755,6 +1756,7 @@ def run():
 					else:
 						print(cur_manager[message['callback_query']['message']['chat']['id']])
 				except:
+					print('HEHEHE')
 					if str(message).find('query') == -1:
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
