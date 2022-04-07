@@ -10,9 +10,9 @@ from threading import Thread
 
 
 
-TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
@@ -1586,7 +1586,7 @@ def run():
 			fl = False
 		except:
 			time.sleep(1)
-	print("Hey")
+	
 	while True:
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
@@ -1598,17 +1598,17 @@ def run():
 				tt = cur_time
 			except:
 				print("Unable to get today`s updates")
-		print("Hey2")
+		
 		try:
 			messages = get_updates(update_id)
 		except:
 			time.sleep(1)
-		print("Hey3")
+		
 		for message in messages:
 			if update_id != message['update_id']:
 				if update_id < message['update_id']:
 					update_id = message['update_id']
-				print("Here")		
+					
 				for ban in banned:
 					if str(message).find('query') == -1:
 						if str(ban) == str(message['message']['chat']['id']):
@@ -1745,9 +1745,9 @@ def run():
 				mes1 = message
 				mes2 = message
 				try:
-					print(cur_manager[chat_id_cur])
+					print(cur_manager[message['message']['chat']['id']])
 				except:
-					cur_manager[chat_id_cur] = [-1, -1]
+					cur_manager[message['message']['chat']['id']] = [-1, -1]
 
 				if True:
 					thread1 = Thread(target=check_message, args=[mes1])
