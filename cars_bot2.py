@@ -10,9 +10,9 @@ from threading import Thread
 
 
 
-#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
@@ -1099,8 +1099,11 @@ def check_message(message):
 		return 1
 
 	if str(message).find('file') > -1:
+		caption = ''
+		if str(message).find('caption') > -1:
+			caption = message['message']['caption']
 		if cur_manager[chat_id_cur][0] != -1:
-			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'])
+			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message_id']['char']['first_name'] + message['message']['chat']['id'][5:] + ': ' + caption)
 			send_message(chat_id_cur, 'Фото доставлено')
 		return 1
 
