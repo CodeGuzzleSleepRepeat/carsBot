@@ -1097,7 +1097,12 @@ def check_message(message):
 
 		chats.append([rrr['result']['message_id'], chat_id_cur])
 		return 1
-	
+
+	if str(message).find('file') > -1:
+		if cur_manager[chat_id_cur][0] != -1:
+			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'])
+			send_message(chat_id_cur, 'Фото доставлено')
+		return 1
 
 	if flag_car[chat_id_cur] == 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
@@ -1770,7 +1775,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()
+run()	
 
 
 
