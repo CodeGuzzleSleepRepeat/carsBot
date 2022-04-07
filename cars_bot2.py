@@ -1118,14 +1118,15 @@ def check_message(message):
 		print(message['message']['text'])
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
+		send_message(chat_id_cur, 'Данные отправлены менеджеру')
+		flag_car[chat_id_cur] = 0
 		return 1
 		
 	if str(message).find('file') > -1:
 		caption = ''
-		if str(message).find('caption') > -1:
+		if str(message['message']).find('caption') > -1:
 			caption = message['message']['caption']
 		if cur_manager[chat_id_cur][0] != -1:
-			print("LOOOK")
 			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
 			send_message(chat_id_cur, 'Фото доставлено')
 		return 1
@@ -1156,9 +1157,9 @@ def check_message(message):
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]] = managers[j][2]
-						if str(message['message']).find('photo') > -1:
+						if str(message).find('photo') > -1:
 							caption = ''
-							if str(message).find('caption') > -1:
+							if str(message['message']).find('caption') > -1:
 								caption = message['message']['caption']
 							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 							username = ' '
@@ -1281,6 +1282,8 @@ def check_message(message):
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Показать админов':
 			for name in admin_name:
+				if (name[0] == 'fcknmaggot' or name[0] == 'dusha322'):
+					continue
 				send_message(chat_id_cur, name[0])
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
@@ -1576,7 +1579,6 @@ def check_query(message):
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
 				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
-				print("CAR_ID", car_id)
 				mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
 				user = ''
 				if str(message['callback_query']['message']['chat']).find('username') > -1:
