@@ -10,9 +10,9 @@ from threading import Thread
 
 
 
-#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
@@ -1099,15 +1099,19 @@ def check_message(message):
 		return 1
 
 	if str(message).find('file') > -1:
+		print("IIII")
 		caption = ''
 		if str(message).find('caption') > -1:
 			caption = message['message']['caption']
+		print(cur_manager[chat_id_cur][0])
 		if cur_manager[chat_id_cur][0] != -1:
+			print("LOOOK")
 			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message_id']['char']['first_name'] + message['message']['chat']['id'][5:] + ': ' + caption)
 			send_message(chat_id_cur, 'Фото доставлено')
 		return 1
 
 	if flag_car[chat_id_cur] == 7:
+		print(message['message']['text'])
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
 		return 1
@@ -1534,6 +1538,7 @@ def check_query(message):
 			manager += compl_arr[l - 3]
 			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		except:
+			print(l, compl_arr)
 			return 1
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
