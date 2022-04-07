@@ -1128,14 +1128,6 @@ def check_message(message):
 		flag_car[chat_id_cur] = 0
 		return 1
 		
-	if str(message).find('file') > -1:
-		caption = ''
-		if str(message['message']).find('caption') > -1:
-			caption = message['message']['caption']
-		if cur_manager[chat_id_cur][0] != -1:
-			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
-			send_message(chat_id_cur, 'Фото доставлено')
-		return 1
 
 	if flag_complaint[chat_id_cur] == 1:
 		if message['message']['text'].find('-') == -1 or message['message']['text'].find('-') == message['message']['text'].rfind('-'):
@@ -1186,6 +1178,14 @@ def check_message(message):
 							break
 				return 1
 
+	if str(message).find('file') > -1:
+		caption = ''
+		if str(message['message']).find('caption') > -1:
+			caption = message['message']['caption']
+		if cur_manager[chat_id_cur][0] != -1:
+			send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
+			send_message(chat_id_cur, 'Фото доставлено')
+		return 1
 
 	if str(message).find('file') > -1:
 		return 1
