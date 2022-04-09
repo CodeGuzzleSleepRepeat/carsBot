@@ -1081,16 +1081,16 @@ def send_sticker(message):
 
 def find_id():
 	length = len(managers.columns)
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
+	for i in range(length):
+		try:
+			if (managers[i][1].lower() == 'Менеджер'.lower()):
+				man = managers[i][2]
 				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-			return -1
+		except:
+			break
+	else:
+		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+		return -1
 	return man
 
 
