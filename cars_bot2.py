@@ -158,7 +158,7 @@ def parse_data(date):
 		
 		for photo in car['photos']:
 			#pic = requests.get(photo['url']).content
-			#ile = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
 			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
@@ -1136,6 +1136,7 @@ def check_message(message):
 		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
 		send_message(chat_id_cur, 'Жалоба отправлена и будет вскоре рассмотрена. Спасибо, что помогаете улучшать сервис')
 		for name in admin_name:
+			print(name, len(admin_name))
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
 		flag_complaint[chat_id_cur] = 0
@@ -1272,7 +1273,7 @@ def check_message(message):
 		if username == str(name[0]) and message['message']['text'] == 'Просмотреть жалобы':
 			i = 0
 			for compl in complaints:
-				print("Here", compl)
+				print("HERE", compl)
 				if (compl == ''):
 					continue
 				compl_arr = compl.split(' ')
@@ -1571,6 +1572,7 @@ def check_query(message):
 	if message['callback_query']['data'].find('comp_del') > -1:
 		i = int(message['callback_query']['data'][8:])
 		complaints[i] = ''
+		print(complaints, i)
 		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
 		return 1
 
@@ -1806,7 +1808,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()			
+run()				
 
 
 
