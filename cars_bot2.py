@@ -1028,8 +1028,15 @@ def shpw_one_clas(message, clas, num, count):
 def send_file(message):
 	global flag_car
 	
-	find_id()
-
+	man = find_id()
+	print(flag_car[message['message']['chat']['id']])
+	if flag_car[message['message']['chat']['id']] == 7:
+			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+			username = ' '
+			if str(message).find('username') > -1:
+				username = message['message']['chat']['username']
+			f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
+			flag_car[message['message']['chat']['id']] = 8
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
 	
@@ -1115,15 +1122,7 @@ def check_message(message):
 
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
-		man = find_id()
-		print(flag_car[chat_id_cur])
-		if flag_car[message['message']['chat']['id']] == 7:
-			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
-			username = ' '
-			if str(message).find('username') > -1:
-				username = message['message']['chat']['username']
-			f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
-			flag_car[message['message']['chat']['id']] = 8
+		print(flag_car[chat_id_cur])		
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
@@ -1841,7 +1840,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()	
+run()		
 
 
 
