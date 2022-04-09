@@ -1179,7 +1179,7 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]][0] = managers[j][2]
 							cur_manager[chats[i][1]][1] = managers[j][1]
-						try:
+						if True:
 							if str(message).find('photo') > -1:
 								caption = ''
 								if str(message['message']).find('caption') > -1:
@@ -1187,16 +1187,16 @@ def check_message(message):
 										caption = message['message']['caption']
 									except:
 										caption = ''
-								try:
+								if True:
 									chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
-								except:
+								else:
 									send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 								username = ' '
 								if str(message).find('username') > -1:
 									username = message['message']['chat']['username']
 								f_write(managers[j][1] + ': Отправлено фото', managers[j][1], chats[i][1], username, datetime.datetime.now())
 								break
-						except:	
+						else:	
 							break
 						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
