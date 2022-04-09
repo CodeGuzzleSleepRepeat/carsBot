@@ -1025,18 +1025,8 @@ def shpw_one_clas(message, clas, num, count):
 
 def send_file(message):
 	global flag_car
-	man = ""
-	length = len(managers.columns)
-	for i in range(length):
-		try:
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
-				break
-		except:
-			break
-	else:
-		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		return -1
+	
+	
 
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
@@ -1110,6 +1100,16 @@ def check_message(message):
 
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
+		for i in range(length):
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
+				break
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+			return -1
 		print(flag_car[chat_id_cur])
 		if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
@@ -1197,6 +1197,8 @@ def check_message(message):
 
 	if str(message).find('file') > -1:
 		caption = ''
+		man = ""
+		length = len(managers.columns)
 		if str(message['message']).find('caption') > -1:
 			caption = message['message']['caption']
 		if cur_manager[chat_id_cur][0] != -1:
@@ -1832,7 +1834,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()						
+run()							
 
 
 
