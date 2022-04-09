@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1585,6 +1585,7 @@ def check_query(message):
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
 				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
+				print(car_id)
 				mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
 				user = ''
 				if str(message['callback_query']['message']['chat']).find('username') > -1:
