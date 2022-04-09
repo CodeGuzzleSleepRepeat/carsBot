@@ -1272,6 +1272,7 @@ def check_message(message):
 		if username == str(name[0]) and message['message']['text'] == 'Просмотреть жалобы':
 			i = 0
 			for compl in complaints:
+				print("Here", compl)
 				if (compl == ''):
 					continue
 				compl_arr = compl.split(' ')
