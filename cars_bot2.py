@@ -1179,19 +1179,21 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]][0] = managers[j][2]
 							cur_manager[chats[i][1]][1] = managers[j][1]
-						if True:
+						try:
 							if str(message).find('photo') > -1:
 								caption = ''
 								if str(message['message']).find('caption') > -1:
 									caption = message['message']['caption']
-								chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
+								try:
+									chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
+								except:
+									send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 								username = ' '
 								if str(message).find('username') > -1:
 									username = message['message']['chat']['username']
-								f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
+								f_write(managers[j][1] + ': Отправлено фото', managers[j][1], chats[i][1], username, datetime.datetime.now())
 								break
-						else:
-							send_message(chat_id_cur, 'Этот формат файла не поддерживается')
+						except:	
 							break
 						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
@@ -1834,16 +1836,16 @@ def run():
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
 						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
-				try:
+				if True:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
 					thread2.start()
-				except:
+				else:
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()		
+run()	
 
 
 
