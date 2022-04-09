@@ -652,7 +652,7 @@ def send_photo_file(chat_id, img, caption):
 	requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}', data=file)
 
 def send_photo_file_id(chat_id, img, caption):
-	return requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}&photo={img}&caption={caption}')
+	return json.loads(requests.post(f'{URL}{TOKEN}/sendPhoto?chat_id={chat_id}&photo={img}&caption={caption}').text)
 
 def send_message(chat_id, text):
 	return json.loads(requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&text={text}').text)
