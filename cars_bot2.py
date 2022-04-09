@@ -1028,7 +1028,7 @@ def shpw_one_clas(message, clas, num, count):
 def send_file(message):
 	global flag_car
 	
-	
+	find_id()
 
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
