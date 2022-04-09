@@ -19,7 +19,7 @@ TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 data = []
 
 
-admin_name = []
+admin_name = [['fcknmaggot', -1]]
 
 supervisors = pd.DataFrame()
 managers = pd.DataFrame()
@@ -49,7 +49,7 @@ it2 = {}
 it3 = {}
 gl_flag = {}
 
-compl_j = 0
+
 start_pos = 20
 
 def parse_data(date):
@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1136,7 +1136,6 @@ def check_message(message):
 		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
 		send_message(chat_id_cur, 'Жалоба отправлена и будет вскоре рассмотрена. Спасибо, что помогаете улучшать сервис')
 		for name in admin_name:
-			print(name, len(admin_name))
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
 		flag_complaint[chat_id_cur] = 0
@@ -1277,8 +1276,7 @@ def check_message(message):
 					complaints.pop(i)
 				i += 1
 			i = 0
-			for compl in complaints:			
-				print("HERE", compl)
+			for compl in complaints:
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
 				i += 1
@@ -1572,11 +1570,8 @@ def check_query(message):
 		return 1
 
 	if message['callback_query']['data'].find('comp_del') > -1:
-		global compl_j
 		i = int(message['callback_query']['data'][8:])
-		print(complaints, i)
 		complaints[i] = ''
-		compl_j += 1
 		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
 		return 1
 
@@ -1812,7 +1807,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()					
+run()						
 
 
 
