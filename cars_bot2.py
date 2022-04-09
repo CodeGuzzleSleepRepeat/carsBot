@@ -1527,7 +1527,7 @@ def check_query(message):
 		pos = message['callback_query']['data'].find('_')
 		for i in range(len(data)):
 			if data[i][0] == 'id: ' + message['callback_query']['data'][8:pos]:
-				res = i
+				res = data[i][0]
 		editMessageCaption(message['callback_query']['message']['message_id'], message['callback_query']['from']['id'], res, 'hide', 17, message['callback_query']['data'][pos + 1:])
 		return
 
@@ -1585,7 +1585,6 @@ def check_query(message):
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
 				car_id = message['callback_query']['data'][7:message['callback_query']['data'].find('_')]
-				print(car_id)
 				mes = car_id + ', ' + data[int(car_id[4:])][1] + ', ' + data[int(car_id[4:])][17] 			#???
 				user = ''
 				if str(message['callback_query']['message']['chat']).find('username') > -1:
