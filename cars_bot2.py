@@ -733,8 +733,8 @@ def get_mes_by_client(manager, client, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		print(words[1].lower(), manager.lower(), words[3], client)
 		try:
+			print(words[1].lower(), manager.lower(), words[3], client)
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
@@ -751,10 +751,10 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		if words[4] == client_name[1:]:
-			client_id = words[3]
-		print(words[1].lower(), manager.lower(), words[3], client, words[4], client_name[1:])
-		try:
+		try:	
+			if words[4] == client_name[1:]:
+				client_id = words[3]
+			print(words[1].lower(), manager.lower(), words[3], client, words[4], client_name[1:])
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client_id):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
