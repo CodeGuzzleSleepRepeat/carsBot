@@ -19,7 +19,7 @@ URL = 'https://api.telegram.org/bot'
 data = []
 
 
-admin_name = [['fcknmaggot', -1]]
+admin_name = []
 
 supervisors = pd.DataFrame()
 managers = pd.DataFrame()
