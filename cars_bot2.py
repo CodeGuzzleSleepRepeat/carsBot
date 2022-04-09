@@ -1275,6 +1275,8 @@ def check_message(message):
 			for compl in complaints:
 				if (compl == ''):
 					complaints.pop(i)
+				i += 1
+			i = 0
 			for compl in complaints:			
 				print("HERE", compl)
 				compl_arr = compl.split(' ')
