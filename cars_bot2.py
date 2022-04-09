@@ -1503,7 +1503,17 @@ def check_message(message):
 		flag_car[chat_id_cur] = 7
 		return 1
 
-	
+	try:
+		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 0:
+			chats.append([send_message(cur_manager[chat_id_cur][0], 'От пользователя id ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
+			username = ' '
+			if str(message).find('username') > -1:
+				username = message['message']['chat']['username']
+			f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'], cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
+			editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
+			return 1
+	except:
+		return 1
 
 
 
@@ -1812,7 +1822,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()						
+run()							
 
 
 
