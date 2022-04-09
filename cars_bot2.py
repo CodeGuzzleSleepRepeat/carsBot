@@ -732,7 +732,7 @@ def get_mes_by_client(manager, client, chat_id):
 		words = a.split(';;')
 		print(words[1].lower(), manager.lower(), words[3], client)
 		try:
-			if words[1].lower() == manager.lower() and words[3] == client:
+			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
 		except:
@@ -750,8 +750,9 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 		words = a.split(';;')
 		if words[4] == client_name[1:]:
 			client_id = words[3]
+		print(words[1].lower(), manager.lower(), words[3], client, words[4], client_name[1:])
 		try:
-			if words[1].lower() == manager.lower() and words[3] == client_id:
+			if words[1].lower() == manager.lower() and str(words[3]) == str(client_id):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
 		except:
@@ -1078,6 +1079,19 @@ def send_sticker(message):
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
 
 
+def find_id():
+	length = len(managers.columns)
+		for i in range(length):
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
+				break
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+			return -1
+	return man
 
 
 def check_message(message):
@@ -1100,16 +1114,7 @@ def check_message(message):
 
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
-		for i in range(length):
-			try:
-				if (managers[i][1].lower() == 'Менеджер'.lower()):
-					man = managers[i][2]
-					break
-			except:
-				break
-		else:
-			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-			return -1
+		find_id()
 		print(flag_car[chat_id_cur])
 		if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
@@ -1129,6 +1134,7 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] >= 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
+		find_id()
 		if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 			username = ' '
@@ -1407,7 +1413,7 @@ def check_message(message):
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -2:
-				get_mes_by_client(cur_salon[chat_id_cur], name[1])
+				get_mes_by_client(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -3:
@@ -1834,7 +1840,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()							
+run()						
 
 
 
