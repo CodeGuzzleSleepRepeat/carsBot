@@ -1040,14 +1040,7 @@ def send_file(message):
 
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
-	print("Look", flag_car[message['message']['chat']['id']])
-	if flag_car[message['message']['chat']['id']] == 7:
-		send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
-		username = ' '
-		if str(message).find('username') > -1:
-			username = message['message']['chat']['username']
-		f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
-		flag_car[message['message']['chat']['id']] = 8
+	
 
 	mes = message['message']['photo'][0]['file_id']
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
@@ -1118,6 +1111,13 @@ def check_message(message):
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
 		print(flag_car[chat_id_cur])
+		if flag_car[message['message']['chat']['id']] == 7:
+			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+			username = ' '
+			if str(message).find('username') > -1:
+				username = message['message']['chat']['username']
+			f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
+			flag_car[message['message']['chat']['id']] = 8
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
@@ -1129,6 +1129,13 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] >= 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
+		if flag_car[message['message']['chat']['id']] == 7:
+			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+			username = ' '
+			if str(message).find('username') > -1:
+				username = message['message']['chat']['username']
+			f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
+		flag_car[message['message']['chat']['id']] = 8
 		send_car_data(message)
 		send_message(chat_id_cur, 'Данные отправлены менеджеру')
 		flag_car[chat_id_cur] = 0
@@ -1398,7 +1405,7 @@ def check_message(message):
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -2:
-				get_mes(cur_salon[chat_id_cur], name[1])
+				get_mes_by_client(cur_salon[chat_id_cur], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -3:
@@ -1825,7 +1832,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()					
+run()						
 
 
 
