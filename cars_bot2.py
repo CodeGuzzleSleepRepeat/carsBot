@@ -726,10 +726,7 @@ def get_mes(manager, chat_id):
 def get_mes_by_client(manager, client, chat_id):
 	arr = f_read()
 	i = 0
-	print('HETE')
-	print(arr)
 	for a in arr:
-		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
@@ -748,13 +745,14 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 	i = 0
 	client_id = ''
 	for a in arr:
+		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
 		try:	
 			if words[4] == client_name[1:]:
 				client_id = words[3]
-			print(words[1].lower(), manager.lower(), words[3], client, words[4], client_name[1:])
+			print(words[1].lower(), manager.lower(), words[3], client_id, words[4], client_name[1:])
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client_id):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
@@ -1117,7 +1115,7 @@ def check_message(message):
 
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
-		find_id()
+		man = find_id()
 		print(flag_car[chat_id_cur])
 		if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
@@ -1137,7 +1135,7 @@ def check_message(message):
 
 	if flag_car[chat_id_cur] >= 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
-		find_id()
+		man = find_id()
 		if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 			username = ' '
