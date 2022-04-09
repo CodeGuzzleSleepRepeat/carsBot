@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			pic = requests.get(photo['url']).content
-			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			file.write(pic)
+			#pic = requests.get(photo['url']).content
+			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			#file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -780,7 +780,7 @@ def get_mes_by_time(manager, day, chat_id):
 	if len(mes) == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
-def get_mes_by_client_date(manager, date, client_id, chat_id):
+def get_mes_by_client_date(manager, date, client_id, cleint_name, chat_id):
 	arr = f_read()
 	i = 0
 	for a in arr:
@@ -794,7 +794,7 @@ def get_mes_by_client_date(manager, date, client_id, chat_id):
 		except:
 			continue
 	if i == 0:
-		send_message(chat_id, 'Таких переписок не найдено')
+		send_message(chat_id, 'Перписок по парметрам ' + manager + ' ' date + ' не найдено (запрос от ' + client_name + ' id ' + str(client_id) + ')')
 
 
 def add_admin(str):
@@ -975,7 +975,7 @@ def shpw_one_clas(message, clas, num, count):
 	global last_clas
 	global gl_flag
 	
-
+	flag_car[message['message']['chat']['id']] = 0
 	price1 = 0
 	price2 = 0
 	j = 0
@@ -1035,13 +1035,15 @@ def send_file(message):
 		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
 		return -1
 
-	if str(message).find('caption') > -1:
-		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
-	send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
-	username = ' '
-	if str(message).find('username') > -1:
-		username = message['message']['chat']['username']
-	f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
+	#if str(message).find('caption') > -1:
+	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
+	if flag_car[message['message']['chat']['id']] == 7:
+		send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
+		username = ' '
+		if str(message).find('username') > -1:
+			username = message['message']['chat']['username']
+		f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
+		flag_car[message['message']['chat']['id']] = 8
 
 	mes = message['message']['photo'][0]['file_id']
 	return requests.get(f'{URL}{TOKEN}/sendPhoto?chat_id={man}&photo={mes}')
@@ -1110,7 +1112,7 @@ def check_message(message):
 
 
 	
-	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
+	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
@@ -1120,7 +1122,7 @@ def check_message(message):
 
 	
 
-	if flag_car[chat_id_cur] == 7:
+	if flag_car[chat_id_cur] == 8:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
 		send_message(chat_id_cur, 'Данные отправлены менеджеру')
@@ -1133,7 +1135,10 @@ def check_message(message):
 			send_message(chat_id_cur, 'Неправильно введена дата')
 			flag_complaint[chat_id_cur] = 0
 			return 1
-		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']))
+		username = 'No_name'
+		if str(message).find('username') > -1:
+			username = message['message']['chat']['username']
+		complaints.append(message['message']['text'] + ' ' + str(message['message']['chat']['id']) + ' ' + username)
 		send_message(chat_id_cur, 'Жалоба отправлена и будет вскоре рассмотрена. Спасибо, что помогаете улучшать сервис')
 		for name in admin_name:
 			if name[1] != -1:
@@ -1278,7 +1283,7 @@ def check_message(message):
 			i = 0
 			for compl in complaints:
 				compl_arr = compl.split(' ')
-				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
+				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 3], i)
 				i += 1
 			if i == 0:
 				send_message(chat_id_cur, 'Жалоб нет')
@@ -1556,15 +1561,15 @@ def check_query(message):
 			return 1
 		l = len(compl_arr)
 		manager = ''
-		for i in range(l - 3):
+		for i in range(l - 4):
 			manager += compl_arr[i] + ' '
 
 		try:
-			manager += compl_arr[l - 3]
-			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
+			manager += compl_arr[l - 4]
+			get_mes_by_client_date(manager, compl_arr[l - 3], compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 		except:
 			manager = 'Менеджер'
-			get_mes_by_client_date(manager, compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
+			get_mes_by_client_date(manager, compl_arr[l - 3], compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
 			return 1
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
