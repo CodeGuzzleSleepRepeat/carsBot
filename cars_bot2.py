@@ -1029,7 +1029,7 @@ def send_file(message):
 	global flag_car
 	
 	man = find_id()
-	print(flag_car[message['message']['chat']['id']])
+	print("This", flag_car[message['message']['chat']['id']])
 	if flag_car[message['message']['chat']['id']] == 7:
 			send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 			username = ' '
@@ -1037,7 +1037,7 @@ def send_file(message):
 				username = message['message']['chat']['username']
 			f_write('Новая машина от пользователя ' +  str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение', 'Менеджер', message['message']['chat']['id'], username, datetime.datetime.now())
 			flag_car[message['message']['chat']['id']] = 8
-			print(flag_car[message['message']['chat']['id']])
+			print("That", flag_car[message['message']['chat']['id']])
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
 	
@@ -1125,7 +1125,7 @@ def check_message(message):
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
 		print(flag_car[chat_id_cur])		
 		rrr = send_file(message).json()
-		print(flag_car[message['message']['chat']['id']])
+		print("Yo", flag_car[message['message']['chat']['id']])
 		if rrr == -1:
 			return 1
 
