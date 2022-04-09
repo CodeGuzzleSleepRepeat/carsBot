@@ -975,7 +975,7 @@ def shpw_one_clas(message, clas, num, count):
 	global last_clas
 	global gl_flag
 	
-	flag_car[message['message']['chat']['id']] = 0
+	
 	price1 = 0
 	price2 = 0
 	j = 0
@@ -997,7 +997,7 @@ def shpw_one_clas(message, clas, num, count):
 		price1 = 100000000
 	else:
 		return False
-
+	flag_car[message['message']['chat']['id']] = 0
 	cc = 0
 	length = len(data)
 	gl_flag[message['message']['chat']['id']] = 1
