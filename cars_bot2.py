@@ -598,7 +598,7 @@ def editMessageCaption(mes_id, chat_id, text, cur, photo_num, salon):
 	price = price[:p] + price[p + 1:]
 	caption += '\n' + ''.join(reversed(price))
 	reply_markup = {'inline_keyboard': [[{'text' : 'Связаться с менеджером', 'callback_data' : 'manager' + str(text) + '_' + str(salon)}]]}
-	sendMedia(chat_id, text, 18)
+	sendMedia(chat_id, text[4:], 18)
 
 	requests.get(f'{URL}{TOKEN}/sendMessage?chat_id={chat_id}&reply_markup={json.dumps(reply_markup)}&text={caption}')
 	
