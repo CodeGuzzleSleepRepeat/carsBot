@@ -585,11 +585,11 @@ def sendMedia(chat_id, ind, start_num):
 def editMessageCaption(mes_id, chat_id, text, cur, photo_num, salon):
 	caption = '\n'.join(data[int(text)][1:17])
 	price = ''
-	l = len(data[int(text)][17])
+	l = len(data[int(text[4:])][17])
 	f = True
 	
 	for i in range(l):
-		price += data[int(text)][17][l - i - 1]
+		price += data[int(text[4:])][17][l - i - 1]
 		if i % 3 == 2 and f:
 			price += ' '
 		if data[int(text)][17][l - i - 1] == ':':
