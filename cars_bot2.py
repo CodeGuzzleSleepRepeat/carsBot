@@ -10,9 +10,9 @@ from threading import Thread
 
 
 
-#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
@@ -689,7 +689,7 @@ def inline_keyboard_visor(chat_id, text):
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
 def inline_keyboard_compl(chat_id, text, i):
-	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}, {'text' : 'Удалить', 'callback_data' : 'comp_del' + str(i + compl_j)}]]}
+	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}, {'text' : 'Удалить', 'callback_data' : 'comp_del' + str(i)}]]}
 	data = {'chat_id': chat_id, 'text': 'Жалоба ' + str(i), 'reply_markup': json.dumps(reply_markup)}
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
@@ -1275,6 +1275,7 @@ def check_message(message):
 			for compl in complaints:
 				print("HERE", compl)
 				if (compl == ''):
+					complaints.pop(i)
 					continue
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
@@ -1571,6 +1572,7 @@ def check_query(message):
 	if message['callback_query']['data'].find('comp_del') > -1:
 		global compl_j
 		i = int(message['callback_query']['data'][8:])
+		print(complaints, i)
 		complaints[i] = ''
 		compl_j += 1
 		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
@@ -1808,7 +1810,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()				
+run()					
 
 
 
