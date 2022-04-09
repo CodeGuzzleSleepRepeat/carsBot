@@ -49,7 +49,7 @@ it2 = {}
 it3 = {}
 gl_flag = {}
 
-
+compl_j = 0
 start_pos = 20
 
 def parse_data(date):
@@ -689,7 +689,7 @@ def inline_keyboard_visor(chat_id, text):
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
 def inline_keyboard_compl(chat_id, text, i):
-	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}, {'text' : 'Удалить', 'callback_data' : 'comp_del' + str(i)}]]}
+	reply_markup = {'inline_keyboard': [[{'text' : 'Просмотреть', 'callback_data' : 'compl' + str(i)}, {'text' : 'Удалить', 'callback_data' : 'comp_del' + str(i + compl_j)}]]}
 	data = {'chat_id': chat_id, 'text': 'Жалоба ' + str(i), 'reply_markup': json.dumps(reply_markup)}
 	return requests.get(f'{URL}{TOKEN}/sendMessage', data = data)
 
@@ -1380,7 +1380,6 @@ def check_message(message):
 				flag_mes[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == -2:
-				#get_mes_by_client(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				get_mes(cur_salon[chat_id_cur], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
@@ -1570,9 +1569,10 @@ def check_query(message):
 		return 1
 
 	if message['callback_query']['data'].find('comp_del') > -1:
+		global compl_j
 		i = int(message['callback_query']['data'][8:])
 		complaints[i] = ''
-		print(complaints, i)
+		compl_j += 1
 		editMessage(message['callback_query']['message']['message_id'], message['callback_query']['message']['chat']['id'], 'Жалоба удалена')
 		return 1
 
