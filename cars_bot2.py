@@ -1183,7 +1183,10 @@ def check_message(message):
 							if str(message).find('photo') > -1:
 								caption = ''
 								if str(message['message']).find('caption') > -1:
-									caption = message['message']['caption']
+									try:
+										caption = message['message']['caption']
+									except:
+										caption = ''
 								try:
 									chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 								except:
@@ -1210,8 +1213,10 @@ def check_message(message):
 		man = ""
 		length = len(managers.columns)
 		if str(message['message']).find('caption') > -1:
-			print(message)
-			caption = message['message']['caption']
+			try:
+				caption = message['message']['caption']
+			except:
+				caption = ''
 		if cur_manager[chat_id_cur][0] != -1:
 			try:
 				send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
