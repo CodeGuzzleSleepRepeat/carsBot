@@ -157,9 +157,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1580,7 +1580,7 @@ def check_query(message):
 				send_message(message['callback_query']['message']['chat']['id'], 'Вы начали диалог с менеджером салона ' + str(managers[man][1]) + '. Чтобы продолжить переписку с менеджером из салона ' + cur_manager[chat_id_cur][1] + ' еще раз свяжитесь с ним')
 				flag_car[message['callback_query']['message']['chat']['id']] = 0
 				length_chats = len(chats)    						#if manager == client - change?
-			if True:
+			try:
 				flag_complaint[chat_id_cur] = 0
 				cur_manager[chat_id_cur][0] = managers[man][2]
 				cur_manager[chat_id_cur][1] = managers[man][1]
@@ -1597,7 +1597,7 @@ def check_query(message):
 					username = message['callback_query']['message']['chat']['username']
 				f_write('Сообщение от пользователя ' + str(chat_id) + ' по поводу машины ' + mes, cur_manager[chat_id_cur][1], chat_id, username, datetime.datetime.now())
 				send_message(chat_id, 'Менеджер ответит вам в ближайшее время')
-			else:
+			except:
 				send_message(chat_id_cur, 'Произошел сбой, пожалуйста, отправьте запрос повторно')
 		else:
 			send_message(message['callback_query']['message']['chat']['id'], 'К сожалению, менеджер еще не пользуется ботом')
@@ -1796,12 +1796,12 @@ def run():
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
 						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
-				if True:
+				try:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
 					thread2.start()
-				else:
+				except:
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
