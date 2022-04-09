@@ -726,7 +726,10 @@ def get_mes(manager, chat_id):
 def get_mes_by_client(manager, client, chat_id):
 	arr = f_read()
 	i = 0
+	print('HETE')
+	print(arr)
 	for a in arr:
+		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
@@ -1081,16 +1084,16 @@ def send_sticker(message):
 
 def find_id():
 	length = len(managers.columns)
-	for i in range(length):
-		try:
-			if (managers[i][1].lower() == 'Менеджер'.lower()):
-				man = managers[i][2]
+		for i in range(length):
+			try:
+				if (managers[i][1].lower() == 'Менеджер'.lower()):
+					man = managers[i][2]
+					break
+			except:
 				break
-		except:
-			break
-	else:
-		send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
-		return -1
+		else:
+			send_message(message['message']['chat']['id'], 'Менеджер еще не пользуется ботом')
+			return -1
 	return man
 
 
@@ -1840,7 +1843,8 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()						
+run()	
+
 
 
 
