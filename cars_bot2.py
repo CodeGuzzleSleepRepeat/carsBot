@@ -1210,6 +1210,7 @@ def check_message(message):
 		man = ""
 		length = len(managers.columns)
 		if str(message['message']).find('caption') > -1:
+			print(message)
 			caption = message['message']['caption']
 		if cur_manager[chat_id_cur][0] != -1:
 			try:
