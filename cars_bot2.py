@@ -10,16 +10,16 @@ from threading import Thread
 
 
 
-#TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
+TOKEN = '5127651114:AAGKbGTvpZlcZWEyhNPiJ-r4adPV0svrIV4'
 URL = 'https://api.telegram.org/bot'
-TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
+#TOKEN = '5177823817:AAHM-d-I065pue_oLXvrsMNnVQTH0jJ9puw'
 
 
 
 data = []
 
 
-admin_name = [['fcknmaggot', -1]]
+admin_name = []
 
 supervisors = pd.DataFrame()
 managers = pd.DataFrame()
@@ -780,7 +780,7 @@ def get_mes_by_time(manager, day, chat_id):
 	if len(mes) == 0:
 		send_message(chat_id, 'Таких переписок не найдено')
 
-def get_mes_by_client_date(manager, date, client_id, cleint_name, chat_id):
+def get_mes_by_client_date(manager, date, client_id, client_name, chat_id):
 	arr = f_read()
 	i = 0
 	for a in arr:
@@ -975,7 +975,6 @@ def shpw_one_clas(message, clas, num, count):
 	global last_clas
 	global gl_flag
 	
-	
 	price1 = 0
 	price2 = 0
 	j = 0
@@ -997,7 +996,9 @@ def shpw_one_clas(message, clas, num, count):
 		price1 = 100000000
 	else:
 		return False
+
 	flag_car[message['message']['chat']['id']] = 0
+	cur_manager[message['message']['chat']['id']][0] = -1
 	cc = 0
 	length = len(data)
 	gl_flag[message['message']['chat']['id']] = 1
@@ -1022,6 +1023,7 @@ def shpw_one_clas(message, clas, num, count):
 	return True
 
 def send_file(message):
+	global flag_car
 	man = ""
 	length = len(managers.columns)
 	for i in range(length):
@@ -1037,6 +1039,7 @@ def send_file(message):
 
 	#if str(message).find('caption') > -1:
 	#	cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['caption']
+	print("Look", flag_car[message['message']['chat']['id']])
 	if flag_car[message['message']['chat']['id']] == 7:
 		send_message(man, 'Новая машина от ' + message['message']['chat']['first_name'] + ' ' + str(message['message']['chat']['id'])[5:] + '. Чтобы написать пользователю - ответьте на его сообщение')
 		username = ' '
@@ -1159,15 +1162,19 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]][0] = managers[j][2]
 							cur_manager[chats[i][1]][1] = managers[j][1]
-						if str(message).find('photo') > -1:
-							caption = ''
-							if str(message['message']).find('caption') > -1:
-								caption = message['message']['caption']
-							chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
-							username = ' '
-							if str(message).find('username') > -1:
-								username = message['message']['chat']['username']
-							f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
+						try:
+							if str(message).find('photo') > -1:
+								caption = ''
+								if str(message['message']).find('caption') > -1:
+									caption = message['message']['caption']
+								chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
+								username = ' '
+								if str(message).find('username') > -1:
+									username = message['message']['chat']['username']
+								f_write(managers[j][1] + ': photo ' + message['message']['photo'][0]['file_id'], managers[j][1], chats[i][1], username, datetime.datetime.now())
+								break
+						except:
+							send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 							break
 						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
@@ -1188,6 +1195,7 @@ def check_message(message):
 				send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
 				send_message(chat_id_cur, 'Фото доставлено')
 			except:
+				send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 				return 1
 		return 1
 
@@ -1822,7 +1830,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()							
+run()						
 
 
 
