@@ -794,7 +794,7 @@ def get_mes_by_client_date(manager, date, client_id, cleint_name, chat_id):
 		except:
 			continue
 	if i == 0:
-		send_message(chat_id, 'Перписок по парметрам ' + manager + ' ' date + ' не найдено (запрос от ' + client_name + ' id ' + str(client_id) + ')')
+		send_message(chat_id, 'Перписок по парметрам ' + manager + ' ' + date + ' не найдено (запрос от ' + client_name + ' id ' + str(client_id) + ')')
 
 
 def add_admin(str):
