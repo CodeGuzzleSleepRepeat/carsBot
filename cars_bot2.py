@@ -1107,6 +1107,8 @@ def check_message(message):
 	global cur_manager
 
 	chat_id_cur = message['message']['chat']['id']
+
+
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] == 7:
 		rrr = send_file(message).json()
@@ -1147,14 +1149,11 @@ def check_message(message):
 					if message['message']['reply_to_message']['message_id'] == chats[i][0]:
 						while gl_flag[chats[i][1]] == 1:
 							time.sleep(1)
-						try:
-							cur_manager[chats[i][1]][0] == managers[j][2]
-						except:
-							cur_manager[chats[i][1]] = [-1, -1]
 						if cur_manager[chats[i][1]][0] != managers[j][2] and cur_manager[chats[i][1]][0] != -1:
 							reply_keyboard_old_manager(chats[i][1], 'Новое сообщение от менеджера ' + managers[j][1] + ', чтобы вернуться к диалогу с ним нажмите клавишу вернуться к диалогу', managers[j][1])
 							flag_car[chats[i][1]] = 0
-							cur_manager[chats[i][1]] = managers[j][2]
+							cur_manager[chats[i][1]][0] = managers[j][2]
+							cur_manager[chats[i][1]][1] = managers[j][1]
 						if str(message).find('photo') > -1:
 							caption = ''
 							if str(message['message']).find('caption') > -1:
@@ -1184,7 +1183,7 @@ def check_message(message):
 				send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
 				send_message(chat_id_cur, 'Фото доставлено')
 			except:
-				send_message(chat_id_cur, 'Данный формат файла не поддерживается')
+				return 1
 		return 1
 
 	if str(message).find('file') > -1:
@@ -1534,7 +1533,7 @@ def check_query(message):
 
 	
 	if message['callback_query']['data'] == 'date':
-		send_message(message['callback_query']['message']['chat']['id'], "Введите дату в формате mm-dd-yy")
+		send_message(message['callback_query']['message']['chat']['id'], "Введите дату в формате dd-mm-yy")
 		flag_mes[chat_id_cur] = 2
 		return 1
 	if message['callback_query']['data'] == 'id':
@@ -1788,16 +1787,6 @@ def run():
 				mes1 = message
 				mes2 = message
 				try:
-					if str(message).find('query') == -1:
-						print(cur_manager[message['message']['chat']['id']][1])
-					else:
-						print(cur_manager[message['callback_query']['message']['chat']['id']][1])
-				except:
-					if str(message).find('query') == -1:
-						cur_manager[message['message']['chat']['id']] = [-1, -1]
-					else:
-						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
-				try:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
@@ -1806,7 +1795,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()		
+run()			
 
 
 
