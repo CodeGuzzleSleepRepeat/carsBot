@@ -1194,7 +1194,7 @@ def check_message(message):
 								username = ' '
 								if str(message).find('username') > -1:
 									username = message['message']['chat']['username']
-								f_write(managers[j][1] + ': Отправлено фото', managers[j][1], chats[i][1], username, datetime.datetime.now())
+								f_write(managers[j][1] + ': Отправлено фото' + caption, managers[j][1], chats[i][1], username, datetime.datetime.now())
 								break
 						else:	
 							break
@@ -1219,8 +1219,13 @@ def check_message(message):
 				caption = ''
 		if cur_manager[chat_id_cur][0] != -1:
 			try:
-				send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)
+				chats.append([send_photo_file_id(cur_manager[chat_id_cur][0], message['message']['photo'][0]['file_id'], 'Сообщение от ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
 				send_message(chat_id_cur, 'Фото доставлено')
+				username = ' '
+					if str(message).find('username') > -1:
+						username = message['message']['chat']['username']
+				f_write(managers[j][1] + ': Отправлено фото', managers[j][1], chats[i][1], username, datetime.datetime.now())
+				f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + 'Отправлено фото ' + caption, cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
 			except:
 				send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 				return 1
