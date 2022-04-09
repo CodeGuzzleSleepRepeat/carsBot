@@ -701,6 +701,7 @@ def inline_keyboard_compl(chat_id, text, i):
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	text = text.replace('\n', ' ')
+	print(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -1224,7 +1225,6 @@ def check_message(message):
 				username = ' '
 				if str(message).find('username') > -1:
 					username = message['message']['chat']['username']
-				f_write(managers[j][1] + ': Отправлено фото', managers[j][1], chats[i][1], username, datetime.datetime.now())
 				f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + 'Отправлено фото ' + caption, cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
 			except:
 				send_message(chat_id_cur, 'Этот формат файла не поддерживается')
