@@ -1273,10 +1273,10 @@ def check_message(message):
 		if username == str(name[0]) and message['message']['text'] == 'Просмотреть жалобы':
 			i = 0
 			for compl in complaints:
-				print("HERE", compl)
 				if (compl == ''):
 					complaints.pop(i)
-					continue
+			for compl in complaints:			
+				print("HERE", compl)
 				compl_arr = compl.split(' ')
 				inline_keyboard_compl(name[1], compl_arr[len(compl_arr) - 2], i)
 				i += 1
