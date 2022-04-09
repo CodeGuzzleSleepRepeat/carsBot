@@ -730,6 +730,7 @@ def get_mes_by_client(manager, client, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
+		print(words[1].lower(), manager.lower(), words[3], client)
 		try:
 			if words[1].lower() == manager.lower() and words[3] == client:
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
@@ -1116,6 +1117,7 @@ def check_message(message):
 
 	
 	if str(message).find('file') > -1 and flag_car[chat_id_cur] >= 7:
+		print(flag_car[chat_id_cur])
 		rrr = send_file(message).json()
 		if rrr == -1:
 			return 1
@@ -1125,7 +1127,7 @@ def check_message(message):
 
 	
 
-	if flag_car[chat_id_cur] == 8:
+	if flag_car[chat_id_cur] >= 7:
 		cur_message[message['message']['chat']['id']] += 'Цена: ' + message['message']['text']
 		send_car_data(message)
 		send_message(chat_id_cur, 'Данные отправлены менеджеру')
@@ -1257,6 +1259,7 @@ def check_message(message):
 					send_message(message['message']['chat']['id'], managers[i][0] + ' ' + managers[i][1])
 				except:
 					break
+			return 1
 		if username == name[0] and message['message']['text'] == 'Показать супервизоров':
 			length_m = len(supervisors.columns)
 			for i in range(length_m):
@@ -1264,6 +1267,7 @@ def check_message(message):
 					send_message(message['message']['chat']['id'], supervisors[i][0] + ' ' + supervisors[i][1])
 				except:
 					break
+			return 1
 		if username == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
 		if username == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
@@ -1511,17 +1515,7 @@ def check_message(message):
 		flag_car[chat_id_cur] = 7
 		return 1
 
-	try:
-		if int(cur_manager[chat_id_cur][0]) > -1 and flag_car[chat_id_cur] == 0:
-			chats.append([send_message(cur_manager[chat_id_cur][0], 'От пользователя id ' + message['message']['chat']['first_name'] + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
-			username = ' '
-			if str(message).find('username') > -1:
-				username = message['message']['chat']['username']
-			f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + message['message']['text'], cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
-			editReplyMarkup(message['message']['chat']['id'], gl_clas[chat_id_cur], 'Сообщение доставлено менеджеру')
-			return 1
-	except:
-		return 1
+	
 
 
 
@@ -1588,6 +1582,7 @@ def check_query(message):
 		except:
 			manager = 'Менеджер'
 			get_mes_by_client_date(manager, compl_arr[l - 3], compl_arr[l - 2], compl_arr[l - 1], message['callback_query']['message']['chat']['id'])
+			flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 			return 1
 		flag_complaint[message['callback_query']['message']['chat']['id']] = 0
 		return 1
@@ -1830,7 +1825,7 @@ def run():
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
-run()						
+run()					
 
 
 
