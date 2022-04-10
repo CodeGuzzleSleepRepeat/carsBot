@@ -782,7 +782,7 @@ def get_mes_by_time(manager, day, chat_id):
 	i = 1
 	for m in mes:
 		send_message(chat_id, 'Диалог ' + str(i))
-		for t in m:
+		for t in mes[m]:
 			send_message(chat_id, t)
 		i += 1
 
