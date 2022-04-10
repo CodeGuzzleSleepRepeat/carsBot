@@ -733,7 +733,7 @@ def get_mes_by_client(manager, client, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
-		if (datetime.datetime.today() - datetime.datetime.strptime(words[2][:8].replace('-', ''), '%d%m%y')).days > 1:
+		if (datetime.datetime.today() - datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))).days > 1:
 			continue
 		try:
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
