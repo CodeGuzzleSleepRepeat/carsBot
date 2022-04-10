@@ -735,7 +735,7 @@ def get_mes_by_client(manager, client, chat_id):
 		words = a.split(';;')	
 		try:
 			print((datetime.date.today(), datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))))
-			if (datetime.date.today() - datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))).days > 1:
+			if (datetime.date.today() - datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))).days > 0:
 				continue
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
