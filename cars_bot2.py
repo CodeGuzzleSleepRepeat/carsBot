@@ -733,6 +733,8 @@ def get_mes_by_client(manager, client, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
+		print(words[2].replace('-', ''))
+		print(datetime.datetime.strptime(words[2].replace('-', ''), '%d%m%y'))
 		if datetime.datetime.today() - datetime.datetime.strptime(words[2].replace('-', ''), '%d%m%y') > 1:
 			continue
 		try:
