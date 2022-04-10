@@ -770,6 +770,7 @@ def get_mes_by_time(manager, day, chat_id):
 		if a == '':
 			continue
 		words = a.split(';;')
+		print(words)
 		i += 1
 		if True:
 			print(words[1].lower(), manager.lower(), words[2][:8], day)
