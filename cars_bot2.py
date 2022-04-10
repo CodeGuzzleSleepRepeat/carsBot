@@ -775,7 +775,7 @@ def get_mes_by_time(manager, day, chat_id):
 				try:
 					mes[words[3]].append(str(words[2]) + ': ' + str(words[0])+ '\n')
 				except:
-					mes[words[3]].append(str(words[2]) + ': ' + str(words[0]) + '\n')
+					mes[words[3]] = [str(words[2]) + ': ' + str(words[0]) + '\n']
 		except:
 			continue
 
