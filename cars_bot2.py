@@ -772,6 +772,7 @@ def get_mes_by_time(manager, day, chat_id):
 		words = a.split(';;')
 		i += 1
 		if True:
+			print(words[1].lower(), manager.lower(), words[2][:8], day)
 			if words[1].lower() == manager.lower() and words[2][:8] == day:
 				try:
 					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
@@ -1460,7 +1461,7 @@ def check_message(message):
 			break
 
 	for name in admin_name:
-		try:
+		if True:
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == 2:
 				get_mes_by_time(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
@@ -1473,7 +1474,7 @@ def check_message(message):
 				get_mes_by_client_name(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
-		except:
+		else:
 			break
 
 	
