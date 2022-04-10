@@ -770,18 +770,18 @@ def get_mes_by_time(manager, day, chat_id):
 		words = a.split(';;')
 		i += 1
 		try:
-			print(words[1].lower(), manager.lower(), words[2][:8], day)
+			#print(words[1].lower(), manager.lower(), words[2][:8], day)
 			if words[1].lower() == manager.lower() and words[2][:8] == day:
 				try:
-					print("Hey")
 					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
-					print(mes[words[3]])
 				except:
-					print("HEllo")
 					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
-					print(mes[words[3]])
 		except:
 			continue
+
+	print(len(mes))
+	time.sleep(5)
+	print(mes)
 	for m in mes:
 		send_message(chat_id, mes[m])
 	if len(mes) == 0:
