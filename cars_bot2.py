@@ -771,13 +771,13 @@ def get_mes_by_time(manager, day, chat_id):
 			continue
 		words = a.split(';;')
 		i += 1
-		try:
+		if True:
 			if words[1].lower() == manager.lower() and words[2][:8] == day:
 				try:
 					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
 				except:
 					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
-		except:
+		else:
 			continue
 	for m in mes:
 		send_message(chat_id, mes[m])
@@ -1418,11 +1418,23 @@ def check_message(message):
 				flag_data[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(managers[i][2]) and flag_user[chat_id_cur] == 1:
+				try:
+					int(message['message']['text'])
+				except:
+					send_message(message['message']['chat']['id'], 'Id введен неверно (возможно вы ввели ник?)')
+					return 1
 				banned.add(message['message']['text'])
+				send_message(message['message']['chat']['id'], 'Пользователь забанен')
 				flag_user[chat_id_cur] = 0
 				return 1
 			if int(message['message']['chat']['id']) == int(managers[i][2]) and flag_user[chat_id_cur] == -1:
-				banned.discard(message['message']['text'])
+				try:
+					int(message['message']['text'])
+				except:
+					send_message(message['message']['chat']['id'], 'Id введен неверно (возможно вы ввели ник?)')
+					return 1
+				banned.discard(message['message']['text'])			
+				send_message(message['message']['chat']['id'], 'Пользователь забанен')
 				flag_user[chat_id_cur] = 0
 				return 1
 		except:
