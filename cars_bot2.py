@@ -701,8 +701,6 @@ def inline_keyboard_compl(chat_id, text, i):
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	text = text.replace('\n', ' ')
-	print(text)
-	print(text.find('\n'))
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -734,7 +732,6 @@ def get_mes_by_client(manager, client, chat_id):
 			continue
 		words = a.split(';;')
 		try:
-			print(words[1].lower(), manager.lower(), words[3], client)
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
@@ -754,7 +751,6 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 		try:	
 			if words[4] == client_name[1:]:
 				client_id = words[3]
-			print(words[1].lower(), manager.lower(), words[3], client_id, words[4], client_name[1:])
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client_id):
 				send_message(chat_id, str(words[2]) + ': ' + str(words[0]))
 				i += 1
@@ -774,17 +770,14 @@ def get_mes_by_time(manager, day, chat_id):
 		words = a.split(';;')
 		i += 1
 		try:
-			#print(words)
 			print(words[1].lower(), manager.lower(), words[2][:8], day)
-			if words[1].lower() == manager.lower() and str(words[2][:8]) == str(day):
+			if words[1].lower() == manager.lower() and words[2][:8] == day:
 				try:
-					print("HEY")
+					print("Hey")
 					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
-					print('YE', mes[words[3]])
 				except:
-					print("HEELO")
+					print("HEllo")
 					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
-					print('Ne', mes[words[3]])
 		except:
 			continue
 	for m in mes:
