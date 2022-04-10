@@ -767,6 +767,7 @@ def get_mes_by_time(manager, day, chat_id):
 	mes = {}
 	i = 0
 	for a in arr:
+		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
