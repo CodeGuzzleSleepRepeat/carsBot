@@ -164,9 +164,10 @@ def parse_data(date):
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
-		print("Downloading photos: " + str(i) + " done")
+		#print("Downloading photos: " + str(i) + " done")
 		i += 1
 		data.append(ddd)
+	print(data[len(data) - 1])
 	print("Parsing completed")
 
 
