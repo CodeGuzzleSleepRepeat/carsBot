@@ -701,7 +701,6 @@ def inline_keyboard_compl(chat_id, text, i):
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	text = text.replace('\n', ' ')
-	print(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -890,7 +889,7 @@ def delete_admin(name):
 		try:
 			file.write(admin_name[i][0])
 			file.write(' ')
-			file.write(str(admin_name[i][1]))
+			file.write(str(-1))
 			file.write('\n')
 		except:
 			break
@@ -926,7 +925,7 @@ def delete_manager(name):
 			file.write(' ')
 			file.write(managers[i][1])
 			file.write(' ')
-			file.write(str(managers[i][2]))
+			file.write(str(-1))
 			file.write('\n')
 		except:
 			break
@@ -1151,10 +1150,10 @@ def check_message(message):
 		return 1
 		
 
-	if flag_complaint[chat_id_cur] == 1:
+	if flag_complaint[chat_id_cur] == 1:		
+		flag_complaint[chat_id_cur] = 0
 		if message['message']['text'].find('-') == -1 or message['message']['text'].find('-') == message['message']['text'].rfind('-'):
 			send_message(chat_id_cur, 'Неправильно введена дата')
-			flag_complaint[chat_id_cur] = 0
 			return 1
 		username = 'No_name'
 		if str(message).find('username') > -1:
@@ -1164,7 +1163,6 @@ def check_message(message):
 		for name in admin_name:
 			if name[1] != -1:
 				send_message(name[1], 'Новая жалоба')
-		flag_complaint[chat_id_cur] = 0
 		return 1
 
 	if str(message).find('reply_to_message') > -1:
@@ -1195,7 +1193,7 @@ def check_message(message):
 								username = ' '
 								if str(message).find('username') > -1:
 									username = message['message']['chat']['username']
-								f_write(managers[j][1] + ': Отправлено фото' + caption, managers[j][1], chats[i][1], username, datetime.datetime.now())
+								f_write(managers[j][1] + ': Отправлено фото. ' + caption, managers[j][1], chats[i][1], username, datetime.datetime.now())
 								break
 						else:	
 							break
@@ -1225,7 +1223,7 @@ def check_message(message):
 				username = ' '
 				if str(message).find('username') > -1:
 					username = message['message']['chat']['username']
-				f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + 'Отправлено фото ' + caption, cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
+				f_write('От пользователя id ' + str(message['message']['chat']['id'])[5:] + ': ' + 'Отправлено фото. ' + caption, cur_manager[chat_id_cur][1], message['message']['chat']['id'], username, datetime.datetime.now())
 			except:
 				send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 				return 1
@@ -1301,10 +1299,18 @@ def check_message(message):
 		if username == str(name[0]) and name[1] == -1:
 			name[1] = message['message']['chat']['id']
 		if username == str(name[0]) and message['message']['text'] == 'Назначить менеджера':
+			flag_admin[chat_id_cur] = 0
+			flag_user[chat_id_cur] = 0
+			flag_del_admin[chat_id_cur] = 0
+			flag_visor[chat_id_cur] = 0
 			send_message(name[1], "Введите ник менеджера и название салона (например, Мкад, 51-й километр) через пробел (для назначения менеджера по приему объявлений напишите просто Менеджер)")
 			flag[chat_id_cur] = 1
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Показать переписки':
+			flag_admin[chat_id_cur] = 0
+			flag_user[chat_id_cur] = 0
+			flag_del_admin[chat_id_cur] = 0
+			flag[chat_id_cur] = 0
 			send_message(name[1], "Введите салон")
 			flag_visor[chat_id_cur] = 1
 			return 1
@@ -1313,6 +1319,10 @@ def check_message(message):
 			cur_salon[chat_id_cur] = message['message']['text']
 			flag_visor[chat_id_cur] = 2
 		if username == str(name[0]) and message['message']['text'] == 'Добавить админа':
+			flag[chat_id_cur] = 0
+			flag_user[chat_id_cur] = 0
+			flag_del_admin[chat_id_cur] = 0
+			flag_visor[chat_id_cur] = 0
 			send_message(name[1], "Введите ник админа")
 			flag_admin[chat_id_cur] = 1
 			return 1
@@ -1331,6 +1341,10 @@ def check_message(message):
 				send_message(chat_id_cur, 'Жалоб нет')
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Удалить админа':
+			flag_admin[chat_id_cur] = 0
+			flag_user[chat_id_cur] = 0
+			flag[chat_id_cur] = 0
+			flag_visor[chat_id_cur] = 0
 			flag_del_admin[chat_id_cur] = 1
 			send_message(chat_id_cur, 'Введите ник админа')
 			return 1
@@ -1345,6 +1359,10 @@ def check_message(message):
 				send_message(chat_id_cur, name[0])
 			return 1
 		if username == str(name[0]) and message['message']['text'] == 'Удалить менеджера':
+			flag_admin[chat_id_cur] = 0
+			flag_user[chat_id_cur] = 0
+			flag_del_admin[chat_id_cur] = 0
+			flag_visor[chat_id_cur] = 0
 			send_message(name[1], "Введите ник менеджера")
 			flag[chat_id_cur] = -1
 			return 1
@@ -1369,10 +1387,18 @@ def check_message(message):
 				flag_data[chat_id_cur] = 1
 				return 1
 			if int(message['message']['chat']['id']) == int(managers[i][2]) and message['message']['text'] == 'Забанить пользователя':
+				flag_admin[chat_id_cur] = 0
+				flag[chat_id_cur] = 0
+				flag_del_admin[chat_id_cur] = 0
+				flag_visor[chat_id_cur] = 0
 				send_message(managers[i][2], "Введите id пользователя")
 				flag_user[chat_id_cur] = 1
 				return 1
 			if int(message['message']['chat']['id']) == int(managers[i][2]) and message['message']['text'] == 'Разбанить пользователя':
+				flag_admin[chat_id_cur] = 0
+				flag[chat_id_cur] = 0
+				flag_del_admin[chat_id_cur] = 0
+				flag_visor[chat_id_cur] = 0
 				send_message(managers[i][2], "Введите id пользователя")
 				flag_user[chat_id_cur] = -1
 				return 1
