@@ -702,7 +702,7 @@ def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	text = text.replace('\n', ' ')
 	print(text)
-	print(text.split('\n'))
+	print(text.find('\n'))
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
