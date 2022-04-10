@@ -780,11 +780,11 @@ def get_mes_by_time(manager, day, chat_id):
 				try:
 					print("HEY")
 					mes[words[3]] += str(words[2]) + ': ' + str(words[0])+ '\n'
-					print(mes[words[3]])
+					print('YE', mes[words[3]])
 				except:
 					print("HEELO")
 					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
-					print(mes[words[3]])
+					print('Ne', mes[words[3]])
 		except:
 			continue
 	for m in mes:
