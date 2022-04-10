@@ -734,7 +734,6 @@ def get_mes_by_client(manager, client, chat_id):
 			continue
 		words = a.split(';;')	
 		try:
-			print((datetime.date.today(), datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))))
 			if (datetime.date.today() - datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))).days > 0:
 				continue
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client):
@@ -756,6 +755,8 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 			continue
 		words = a.split(';;')
 		try:	
+			if (datetime.date.today() - datetime.date(int('20' + words[2][6:8]), int(words[2][3:5]), int(words[2][:2]))).days > 0:
+				continue
 			if words[4] == client_name[1:]:
 				client_id = words[3]
 			if words[1].lower() == manager.lower() and str(words[3]) == str(client_id):
@@ -1471,7 +1472,7 @@ def check_message(message):
 			break
 
 	for name in admin_name:
-		if True:
+		try:
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == 2:
 				get_mes_by_time(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
@@ -1484,7 +1485,7 @@ def check_message(message):
 				get_mes_by_client_name(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
-		else:
+		except:
 			break
 
 	
@@ -1732,7 +1733,8 @@ def run():
 	while True:
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
-		if int(cur_time.minute) >= int(tt.minute) + 15:
+		print(cur_date.day, date.day)
+		if int(cur_date.day) != int(date.day):
 			try:
 				thread3 = Thread(target = parse_data, args = [str(date.year) + '-' + str(date.month) + '-' + str(date.day)])
 				thread3.start()
