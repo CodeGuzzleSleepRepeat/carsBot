@@ -766,6 +766,7 @@ def get_mes_by_time(manager, day, chat_id):
 	arr = f_read()
 	mes = {}
 	i = 0
+	print(arr)
 	for a in arr:
 		print(a)
 		if a == '':
