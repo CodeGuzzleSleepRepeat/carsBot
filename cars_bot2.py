@@ -770,7 +770,6 @@ def get_mes_by_time(manager, day, chat_id):
 		words = a.split(';;')
 		i += 1
 		try:
-			#print(words[1].lower(), manager.lower(), words[2][:8], day)
 			if words[1].lower() == manager.lower() and words[2][:8] == day:
 				try:
 					mes[words[3]].append(str(words[2]) + ': ' + str(words[0])+ '\n')
@@ -1183,7 +1182,7 @@ def check_message(message):
 							flag_car[chats[i][1]] = 0
 							cur_manager[chats[i][1]][0] = managers[j][2]
 							cur_manager[chats[i][1]][1] = managers[j][1]
-						if True:
+						try:
 							if str(message).find('photo') > -1:
 								caption = ''
 								if str(message['message']).find('caption') > -1:
@@ -1191,16 +1190,16 @@ def check_message(message):
 										caption = message['message']['caption']
 									except:
 										caption = ''
-								if True:
+								try:
 									chats.append([send_photo_file_id(chats[i][1], message['message']['photo'][0]['file_id'], managers[j][1] + ': ' + caption)['result']['message_id'], message['message']['chat']['id']])
-								else:
+								except:
 									send_message(chat_id_cur, 'Этот формат файла не поддерживается')
 								username = ' '
 								if str(message).find('username') > -1:
 									username = message['message']['chat']['username']
 								f_write(managers[j][1] + ': Отправлено фото. ' + caption, managers[j][1], chats[i][1], username, datetime.datetime.now())
 								break
-						else:	
+						except:	
 							break
 						try:
 							chats.append([send_message(chats[i][1], managers[j][1] + ': ' + message['message']['text'])['result']['message_id'], message['message']['chat']['id']])
@@ -1439,7 +1438,7 @@ def check_message(message):
 					send_message(message['message']['chat']['id'], 'Id введен неверно (возможно вы ввели ник?)')
 					return 1
 				banned.discard(message['message']['text'])			
-				send_message(message['message']['chat']['id'], 'Пользователь забанен')
+				send_message(message['message']['chat']['id'], 'Пользователь разбанен')
 				flag_user[chat_id_cur] = 0
 				return 1
 		except:
@@ -1465,7 +1464,7 @@ def check_message(message):
 			break
 
 	for name in admin_name:
-		if True:
+		try:
 			if int(message['message']['chat']['id']) == int(name[1]) and flag_mes[chat_id_cur] == 2:
 				get_mes_by_time(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
@@ -1478,7 +1477,7 @@ def check_message(message):
 				get_mes_by_client_name(cur_salon[chat_id_cur], message['message']['text'], name[1])
 				flag_mes[chat_id_cur] = 0
 				return 1
-		else:
+		except:
 			break
 
 	
@@ -1708,6 +1707,7 @@ def run():
 	it = {}
 
 	parse_data("2019-01-01")
+	parse_data("2019-01-01")
 
 	get_admins()
 	print("Admins: ", admin_name)
@@ -1890,12 +1890,12 @@ def run():
 						cur_manager[message['message']['chat']['id']] = [-1, -1]
 					else:
 						cur_manager[message['callback_query']['message']['chat']['id']] = [-1, -1]
-				if True:
+				try:
 					thread1 = Thread(target=check_message, args=[mes1])
 					thread2 = Thread(target=check_query, args=[mes2])
 					thread1.start()
 					thread2.start()
-				else:
+				except:
 					send_message(message['message']['chat']['id'], 'Произошел сбой, пожалуйста, отправьте свое сообщение повторно')
 				
 
