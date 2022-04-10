@@ -164,10 +164,9 @@ def parse_data(date):
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
-		#print("Downloading photos: " + str(i) + " done")
+		print("Downloading photos: " + str(i) + " done")
 		i += 1
 		data.append(ddd)
-	print(data[len(data) - 1])
 	print("Parsing completed")
 
 
@@ -1707,8 +1706,7 @@ def run():
 	ban_flag = False
 	it = {}
 
-	parse_data("2019-01-01")
-	parse_data("2019-01-01")
+	parse_data("2022-01-01")
 
 	get_admins()
 	print("Admins: ", admin_name)
