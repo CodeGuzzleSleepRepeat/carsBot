@@ -158,9 +158,9 @@ def parse_data(date):
 		j = 0
 		
 		for photo in car['photos']:
-			#pic = requests.get(photo['url']).content
-			#file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
-			#file.write(pic)
+			pic = requests.get(photo['url']).content
+			file = open('car' + str(i) + '_photo' + str(j) + '.jpg', "wb")
+			file.write(pic)
 			ddd.append('car' + str(i) + '_photo' + str(j) + '.jpg')
 			j += 1
 
@@ -1733,7 +1733,6 @@ def run():
 	while True:
 		cur_time = datetime.datetime.now()
 		cur_date = datetime.date.today()
-		print(cur_date.day, date.day)
 		if int(cur_date.day) != int(date.day):
 			try:
 				thread3 = Thread(target = parse_data, args = [str(date.year) + '-' + str(date.month) + '-' + str(date.day)])
