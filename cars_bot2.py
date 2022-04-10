@@ -1454,7 +1454,7 @@ def check_message(message):
 
 
 	for i in range(length_visors):
-		try:
+		if True:
 			if int(message['message']['chat']['id']) == int(supervisors[i][2]) and message['message']['text'] == 'Вся переписка':
 				get_mes(supervisors[i][1], supervisors[i][2])
 				return 1
@@ -1466,7 +1466,7 @@ def check_message(message):
 				send_message(supervisors[i][2], "Введите id клиента")
 				flag_mes[chat_id_cur] = -1
 				return 1
-		except:
+		else:
 			break
 
 	for name in admin_name:
