@@ -701,6 +701,8 @@ def inline_keyboard_compl(chat_id, text, i):
 def f_write(text, manager, client_id, client_name, time):
 	file = open('messages.txt', "a+")
 	text = text.replace('\n', ' ')
+	print(text)
+	print(text.split('\n'))
 	file.write(text + ';;' + manager + ';;' + time.strftime('%d-%m-%y %H:%M:%S') + ';;' + str(client_id) + ';;' + client_name + '\n')	
 	file.close()
 
@@ -746,7 +748,6 @@ def get_mes_by_client_name(manager, client_name, chat_id):
 	i = 0
 	client_id = ''
 	for a in arr:
-		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
@@ -766,12 +767,11 @@ def get_mes_by_time(manager, day, chat_id):
 	arr = f_read()
 	mes = {}
 	i = 0
+
 	for a in arr:
-		print(a)
 		if a == '':
 			continue
 		words = a.split(';;')
-		print(words)
 		i += 1
 		try:
 			print(words[1].lower(), manager.lower(), words[2][:8], day)
@@ -781,7 +781,6 @@ def get_mes_by_time(manager, day, chat_id):
 				except:
 					mes[words[3]] = str(words[2]) + ': ' + str(words[0]) + '\n'
 		except:
-			time.sleep(1)
 			continue
 	for m in mes:
 		send_message(chat_id, mes[m])
